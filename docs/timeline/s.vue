@@ -31,6 +31,9 @@ function genSource(source) {
   <div v-for="(ss, time) in ani" :key="time">
     <div v-if="!set_time || time === set_time">
       <HA :name="time" :id="time" lv="2">{{ time }}</HA>
+      <Link href="https://github.com/bili-vd-bak/aniclip-src/new/master"
+        >向本季度({{ time }})贡献数据 -> github.com</Link
+      >
       <div v-for="ani in ss" :key="ani.title">
         <HA :name="ani.title" :id="ani.title" lv="3">{{ ani.title }}</HA>
         <img width="180" :src="ani.cover" v-if="ani.cover" />
@@ -87,6 +90,16 @@ function genSource(source) {
         </li> -->
           <!-- <pre><code>{{ clips }}</code></pre> -->
         </div>
+        <Link
+          :href="
+            'https://github.com/bili-vd-bak/aniclip-src/edit/master/' +
+            time +
+            '|' +
+            ani.title +
+            '.toml'
+          "
+          >向该番剧({{ ani.title }})贡献数据 -> github.com</Link
+        >
         <!-- <pre><code>{{ ani.list }}</code></pre> -->
       </div>
       <!-- <pre><code>{{ ss }}</code></pre> -->
