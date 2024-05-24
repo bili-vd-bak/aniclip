@@ -23,3 +23,20 @@
 ## 贡献指南
 
 详情参考`docs/index.md`  
+
+## 开发
+
+1. 克隆该仓库  
+2. 克隆子仓库
+
+```bash
+git submodule init
+```
+
+3. 启动vitepress
+
+```bash
+pnpm i
+pnpm dev
+pnpm build
+```
