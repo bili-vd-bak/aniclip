@@ -19,6 +19,17 @@ export default defineConfig({
       label: "页面大纲",
       level: "deep",
     },
+    socialLinks: [
+      {
+        icon: "github",
+        link: "https://github.com/bili-vd-bak/aniclip",
+        ariaLabel: "程序仓库",
+      },
+    ],
+    footer: {
+      message: "Released under the MIT License.",
+      copyright: "Copyright © 2024-present bili-vd-bak",
+    },
   },
   markdown: {
     lineNumbers: true,

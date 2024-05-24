@@ -17,8 +17,12 @@
 ## LICENSE 许可证
 
 本仓库中：  
-**代码部分**采用`MIT`协议开源；  
-**数据部分**(仓库`src/`目录下文件、文档中所有显示番剧删减信息的表格或文字等)采用[CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)许可协议共享。
+[**代码部分**](https://github.com/bili-vd-bak/aniclip)采用`MIT`协议开源；  
+[**数据部分**](https://github.com/bili-vd-bak/aniclip-src)(仓库`src/`目录下文件、文档中所有显示番剧删减信息的表格或文字等)采用[CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)许可协议共享。
+
+<!-- ## 帮助我们提供数据或改进程序
+
+[点击查看贡献指南](contribute.md) -->
 
 ## 贡献指南
 
