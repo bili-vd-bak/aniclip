@@ -1,4 +1,4 @@
-import fs from "fs-extra";
+import fs, { link } from "fs-extra";
 import path from "path";
 
 const tls: string[] = [];
@@ -22,7 +22,16 @@ export default [
     link: "/",
   },
   {
+    text: "贡献指南",
+    link: "/contribute",
+  },
+  {
+    text: "数据转换工具(可视化编辑器)",
+    link: "/liveditor",
+  },
+  {
     text: "时间线",
     items: [{ text: "合集", link: "/timeline" }, ...timeline],
+    collapsed: false,
   },
 ];
