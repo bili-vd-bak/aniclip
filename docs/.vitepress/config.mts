@@ -83,6 +83,8 @@ export default defineConfig({
             showDate: false,
           },
         },
+        // indexingCommand:
+        //   'pnpx pagefind --site "docs/.vitepress/dist" --exclude-selectors "img, a.header-anchor"',
       }),
     ],
   },

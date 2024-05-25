@@ -40,3 +40,9 @@ pnpm i
 pnpm dev
 pnpm build
 ```
+
+## BUG
+
+### 本地开发时无法打开网页
+
+由于 pagefind 搜索插件的问题，您需要排查[该问题](https://cn.vitejs.dev/guide/troubleshooting#requests-are-stalled-forever)。  
