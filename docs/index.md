@@ -1,6 +1,11 @@
+<script lang="ts" setup>
+import { data as time } from "./time.data.ts"
+</script>
+
 # AniClip 番剧删减汇总
 
-最近更新时间：`{{ (new Date()).toLocaleString("zh-Hans-CN") }}`[`{{ new Date() }}`]
+最近构建时间：`{{ new Date(time?.build).toLocaleString("zh-Hans-CN") }}`[`{{ new Date(time?.build) }}`]
+最近更新时间：`{{ new Date(time?.src_update).toLocaleString("zh-Hans-CN") }}`[`{{ new Date(time?.src_update) }}`]
 
 ::: danger 须知(数据来源)
 数据主要来自[汇总酱](https://hzj.wiki)，以及该仓库的其他贡献者。  

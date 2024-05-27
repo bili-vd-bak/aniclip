@@ -31,7 +31,7 @@ export default [
   },
   {
     text: "时间线",
-    items: [{ text: "合集", link: "/timeline" }, ...timeline],
+    items: [{ text: "概览(合集)", link: "/timeline" }, ...timeline],
     collapsed: false,
   },
 ];
