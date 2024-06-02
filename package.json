@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "@std/toml": "npm:@jsr/std__toml@^0.224.0",
-    "@std/yaml": "npm:@jsr/std__yaml@^0.224.0",
+    "@std/yaml": "npm:@jsr/std__yaml@^0.224.1",
     "@types/fs-extra": "^11.0.4",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0",
     "hh-mm-ss": "^1.2.0",
     "pagefind": "^1.1.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.15",
-    "vitepress-plugin-pagefind": "^0.3.3"
+    "vitepress-plugin-pagefind": "^0.4.0"
   }
 }
