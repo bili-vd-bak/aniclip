@@ -8,6 +8,11 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
+    "@nolebase/markdown-it-bi-directional-links": "^2.1.2",
+    "@nolebase/vitepress-plugin-enhanced-mark": "^2.1.2",
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.1.2",
+    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.1.2",
+    "@nolebase/vitepress-plugin-meta": "^2.1.2",
     "@types/hh-mm-ss": "^1.2.3",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.2",

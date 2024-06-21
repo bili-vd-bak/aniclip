@@ -13,8 +13,8 @@
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -22,7 +22,9 @@
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx", "tailwind.config.js", "postcss.config.js",
+    "**/*.tsx",
+    "tailwind.config.js",
+    "postcss.config.js",
   ],
   "exclude": [
     "node_modules"

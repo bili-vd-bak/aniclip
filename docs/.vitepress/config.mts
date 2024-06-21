@@ -4,12 +4,20 @@ import {
   chineseSearchOptimize,
   pagefindPlugin,
 } from "vitepress-plugin-pagefind";
+import { BiDirectionalLinks } from "@nolebase/markdown-it-bi-directional-links";
+import { transformHeadMeta } from "@nolebase/vitepress-plugin-meta";
 
 // https://vitepress.vuejs.org/config/app-configs
 export default defineConfig({
   title: "AniClip 番剧删减汇总",
   description: "一个番剧删减汇总平台。",
-  lang: "zh-cn",
+  lang: "zh-CN",
+  head: [
+    [
+      "meta",
+      { name: "msvalidate.01", content: "06754DA6F5D83AD9FBC3E4F04B15FAE7" }, //add bing vaild
+    ],
+  ],
   cleanUrls: true,
   metaChunk: true,
   lastUpdated: true,
@@ -26,26 +34,6 @@ export default defineConfig({
         ariaLabel: "程序仓库",
       },
     ],
-    // search: {
-    //   provider: "local",
-    //   options: {
-    //     miniSearch: {
-    //       options: {
-    //         processTerm: (term) => {
-    //           const segmenter =
-    //             Intl.Segmenter &&
-    //             new Intl.Segmenter("zh", { granularity: "word" });
-    //           if (!segmenter) return term;
-    //           const tokens = [];
-    //           for (const seg of segmenter.segment(term)) {
-    //             tokens.push(seg.segment);
-    //           }
-    //           return tokens;
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
     footer: {
       message: "Released under the MIT License.",
       copyright: "Copyright © 2024-present bili-vd-bak",
@@ -67,8 +55,30 @@ export default defineConfig({
     image: {
       lazyLoading: true,
     },
+    config: (md) => {
+      md.use(
+        BiDirectionalLinks({
+          dir: "docs",
+        })
+      );
+    },
+  },
+  async transformHead(context) {
+    let head = [...context.head];
+    const returnedHead = await transformHeadMeta()(head, context);
+    if (typeof returnedHead !== "undefined") head = returnedHead;
+    return head;
   },
   vite: {
+    optimizeDeps: {
+      exclude: ["@nolebase/vitepress-plugin-enhanced-readabilities/client"],
+    },
+    ssr: {
+      noExternal: [
+        "@nolebase/vitepress-plugin-enhanced-readabilities",
+        "@nolebase/vitepress-plugin-highlight-targeted-heading",
+      ],
+    },
     plugins: [
       pagefindPlugin({
         customSearchQuery: chineseSearchOptimize,
@@ -83,8 +93,6 @@ export default defineConfig({
             showDate: false,
           },
         },
-        // indexingCommand:
-        //   'pnpx pagefind --site "docs/.vitepress/dist" --exclude-selectors "img, a.header-anchor"',
       }),
     ],
   },
