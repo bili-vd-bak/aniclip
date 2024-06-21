@@ -21,6 +21,9 @@ export default defineConfig({
   cleanUrls: true,
   metaChunk: true,
   lastUpdated: true,
+  sitemap: {
+    hostname: "https://aniclip.xrzyun.eu.org",
+  },
   themeConfig: {
     sidebar,
     outline: {
