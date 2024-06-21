@@ -10,11 +10,11 @@
   "devDependencies": {
     "@types/hh-mm-ss": "^1.2.3",
     "autoprefixer": "^10.4.19",
-    "daisyui": "^4.11.1",
+    "daisyui": "^4.12.2",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3",
-    "vitepress": "^1.2.2",
-    "vue": "^3.4.27"
+    "tailwindcss": "^3.4.4",
+    "vitepress": "^1.2.3",
+    "vue": "^3.4.29"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -24,14 +24,14 @@
     }
   },
   "dependencies": {
-    "@std/toml": "npm:@jsr/std__toml@^0.224.0",
-    "@std/yaml": "npm:@jsr/std__yaml@^0.224.1",
+    "@std/toml": "npm:@jsr/std__toml@^0.224.1",
+    "@std/yaml": "npm:@jsr/std__yaml@^0.224.2",
     "@types/fs-extra": "^11.0.4",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0",
     "hh-mm-ss": "^1.2.0",
     "pagefind": "^1.1.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.15",
-    "vitepress-plugin-pagefind": "^0.4.0"
+    "vitepress-plugin-pagefind": "^0.4.2"
   }
 }
