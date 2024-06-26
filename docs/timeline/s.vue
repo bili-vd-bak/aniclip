@@ -9,6 +9,11 @@ import HA from "../utils/head-anchor.vue";
 
 defineProps(["set_time", "min"]);
 
+const isASL = (set_time) =>
+  set_time === "自动同步最新" ||
+  set_time === "ASL" ||
+  set_time === "AutoSyncLatest";
+
 /**
  * 获取视频源
  * @param {string} source
@@ -32,19 +37,16 @@ function genSource(source) {
     <div v-if="!set_time || time === set_time">
       <HA :name="time" :id="time" lv="2">{{ time }}</HA>
       <Link
-        v-if="
-          set_time !== '自动同步最新' &&
-          set_time !== 'ASL' &&
-          set_time !== 'AutoSyncLatest'
-        "
+        v-if="!isASL(time)"
         href="https://github.com/bili-vd-bak/aniclip-src/new/master"
         >向本季度({{ time }})贡献数据 -> github.com</Link
       >
       <div v-for="ani in ss" :key="ani.title">
         <div v-if="min === 'on'">
-          跳转至<Link :href="'timeline/' + time + '#' + ani.title">{{
-            ani.title
-          }}</Link>
+          跳转至<Link
+            :href="(isASL(time) ? 'ASL' : 'timeline/' + time) + '#' + ani.title"
+            >{{ ani.title }}</Link
+          >
         </div>
         <div v-else>
           <HA :name="ani.title" :id="ani.title" lv="3">{{ ani.title }}</HA>
