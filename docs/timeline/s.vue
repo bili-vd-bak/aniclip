@@ -31,7 +31,13 @@ function genSource(source) {
   <div v-for="(ss, time) in ani" :key="time">
     <div v-if="!set_time || time === set_time">
       <HA :name="time" :id="time" lv="2">{{ time }}</HA>
-      <Link href="https://github.com/bili-vd-bak/aniclip-src/new/master"
+      <Link
+        v-if="
+          set_time !== '自动同步最新' &&
+          set_time !== 'ASL' &&
+          set_time !== 'AutoSyncLatest'
+        "
+        href="https://github.com/bili-vd-bak/aniclip-src/new/master"
         >向本季度({{ time }})贡献数据 -> github.com</Link
       >
       <div v-for="ani in ss" :key="ani.title">

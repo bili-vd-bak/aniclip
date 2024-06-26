@@ -31,7 +31,14 @@ export default [
   },
   {
     text: "时间线",
-    items: [{ text: "概览(合集)", link: "/timeline" }, ...timeline],
+    items: [
+      {
+        text: "最新(自动同步hzj.wiki)",
+        link: "/ASL",
+      },
+      { text: "速览(全部收录番剧)", link: "/timeline" },
+      ...timeline,
+    ],
     collapsed: false,
   },
 ];

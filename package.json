@@ -8,18 +8,18 @@
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
-    "@nolebase/markdown-it-bi-directional-links": "^2.1.2",
-    "@nolebase/vitepress-plugin-enhanced-mark": "^2.1.2",
-    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.1.2",
-    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.1.2",
-    "@nolebase/vitepress-plugin-meta": "^2.1.2",
+    "@nolebase/markdown-it-bi-directional-links": "^2.2.0",
+    "@nolebase/vitepress-plugin-enhanced-mark": "^2.2.0",
+    "@nolebase/vitepress-plugin-enhanced-readabilities": "^2.2.0",
+    "@nolebase/vitepress-plugin-highlight-targeted-heading": "^2.2.0",
+    "@nolebase/vitepress-plugin-meta": "^2.2.0",
     "@types/hh-mm-ss": "^1.2.3",
     "autoprefixer": "^10.4.19",
-    "daisyui": "^4.12.2",
+    "daisyui": "^4.12.8",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "vitepress": "^1.2.3",
-    "vue": "^3.4.29"
+    "vue": "^3.4.30"
   },
   "pnpm": {
     "peerDependencyRules": {
@@ -30,13 +30,13 @@
   },
   "dependencies": {
     "@std/toml": "npm:@jsr/std__toml@^0.224.1",
-    "@std/yaml": "npm:@jsr/std__yaml@^0.224.2",
+    "@std/yaml": "npm:@jsr/std__yaml@^0.224.3",
     "@types/fs-extra": "^11.0.4",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0",
     "hh-mm-ss": "^1.2.0",
     "pagefind": "^1.1.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.15",
-    "vitepress-plugin-pagefind": "^0.4.2"
+    "vitepress-plugin-pagefind": "^0.4.3"
   }
 }

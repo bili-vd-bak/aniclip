@@ -19,15 +19,16 @@ import { data as time } from "./time.data.ts"
 
 ::: tip 须知(基本操作)
 你可以使用侧边栏按**时间线**查询番剧，也可直接使用页面上方导航栏**搜索框**搜索番剧。  
-**搜索框**分词功能有点问题，暂时建议进入 `时间线`-`合集` 页面，调用浏览器自带搜索(`Ctrl`+`k`)。  
+**搜索框**分词功能有点问题，暂时建议进入 `时间线`-`速览` 页面，调用浏览器自带搜索(`Ctrl`+`k`)。  
+**最新**由自动程序同步，可能不准确；其它项目均经基本人工核准。  
 :::
 
 ## LICENSE 许可证
 
 本仓库中：  
 [**代码部分**](https://github.com/bili-vd-bak/aniclip)采用`MIT`协议开源；  
-[**数据部分**](https://github.com/bili-vd-bak/aniclip-src)(仓库`src/`目录下文件、文档中所有显示番剧删减信息的表格或文字等)采用[CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/)许可协议共享。
+[**数据部分**](https://github.com/bili-vd-bak/aniclip-src)(仓库`src/`目录下文件、文档中所有显示番剧删减信息的表格或文字等)采用[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)许可协议共享。
 
 ## 帮助我们提供数据或改进程序
 
-[点击查看贡献指南](contribute.md)
+[[contribute|点击查看贡献指南]]

@@ -18,21 +18,21 @@ interface ss {
   title?: string;
   tips?: string;
   cover?: string;
-  [key: string]: ep | string | undefined;
+  [key: string]: ep[] | string | undefined;
 }
 
 export interface Data {
   title?: string;
   tips?: string;
   cover?: string;
-  list: { [key: string]: ep | string | undefined };
+  list: { [key: string]: ep[] | string | undefined };
 }
 
 declare const data: Data;
 export { data };
 
 export default defineLoader({
-  watch: ["../../src/timeline/*.toml"],
+  watch: ["../../src/timeline/*.toml", "../../src/AutoSyncLatest/*.toml"],
   load(watchedFiles) {
     // watchFiles 是一个所匹配文件的绝对路径的数组。
     // 生成一个博客文章元数据数组
@@ -44,7 +44,7 @@ export default defineLoader({
         fs.readFileSync(file, "utf-8")
       ) as unknown as ss;
       !list[time] ? (list[time] = []) : "";
-      let tmp: { [key: string]: ep | string | undefined } = {};
+      const tmp: { [key: string]: ep[] | string | undefined } = {};
       for (const [k, v] of Object.entries(toml_raw)) {
         if (k !== "title" && k !== "tips" && k !== "cover") tmp[k] = v;
       }
