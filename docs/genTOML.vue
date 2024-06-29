@@ -117,7 +117,7 @@
       class="shiki shiki-themes github-light github-dark vp-code"
       tabindex="0"
     ><code><span :class="ep?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[[</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">{{ Number(ep) ? ep : `"${ep}"` }}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">]]</span></span>
-<span :class="type?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">type = </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">"{{ type }}"</span></span>
+<span :class="type?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">type = </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">"{{ cType(type) }}"</span></span>
 <span :class="cSS(ss,true)?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">ss = </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">"{{ cSS(ss) }}"</span></span>
 <span :class="cT(t,true)?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">t = </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">"{{ cT(t) }}"</span><!--<span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"> # 此行可不填</span>--></span>
 <span :class="source.match(m_url)?'line diff add':'line highlighted error'"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">source = </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">"{{ source }}"</span></span>
@@ -152,7 +152,17 @@ const clip = ref("");
 const m_url =
   /^(((ht|f)tps?):\/\/)?([^!@#$%^&*?.\s-]([^!@#$%^&*?.\s]{0,63}[^!@#$%^&*?.\s])?\.)+[a-z]{2,6}\/?/g;
 
+const cType = (type: string) =>
+  type
+    .replaceAll("画面", "v_")
+    .replaceAll("字幕", "s_")
+    .replaceAll("音频", "a_")
+    .replaceAll("丢失", "l") // 存在hzj.wiki错别字现象："丟失"
+    .replaceAll("和谐", "c")
+    .replaceAll("(翻译)错误", "e");
+
 function cSS(ss: any, c = false) {
+  if (typeof ss === "string") ss = ss.replaceAll("：", ":");
   try {
     TimeFormat.toMs(ss);
   } catch (error) {
@@ -167,6 +177,7 @@ function cT(t: any, c = false) {
       return true;
     } else return "";
   if (Number(t)) return t;
+  else if (typeof t === "string") t = t.replaceAll("：", ":");
   try {
     TimeFormat.toMs(t);
   } catch (error) {
