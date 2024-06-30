@@ -37,6 +37,6 @@
     "hh-mm-ss": "^1.2.0",
     "pagefind": "^1.1.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.15",
-    "vitepress-plugin-pagefind": "^0.4.4"
+    "vitepress-plugin-pagefind": "0.4.3"
   }
 }
