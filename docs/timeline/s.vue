@@ -3,6 +3,7 @@
 import { data as ani } from "./toml.data.ts";
 import typeTrans from "../utils/typeTrans.ts";
 import validName from "../utils/get-valid-name.ts";
+import ssRealGen from "../utils/ss-real-gen.vue";
 import typeCodeGen from "../utils/type-code-gen.vue";
 import ffmpegCommandGen from "../utils/ffmpeg-command-gen.vue";
 import Link from "vitepress/dist/client/theme-default/components/VPLink.vue";
@@ -34,22 +35,28 @@ function genSource(source) {
 }
 
 let dts = {};
-function ssGen_dts(id, ss, t) {
-  try {
-    if (!t) t = 0;
-    else if (!Number(t)) t = TimeFormat.toS(t);
-    if (!dts[id]) dts[id] = 0;
-    const t_ret = TimeFormat.fromS(TimeFormat.toS(ss) + dts[id]);
-    dts[id] += Number(t);
-    return t_ret;
-  } catch (error) {
-    console.error(error);
-  }
-  return "非法格式，此行数据可能有误";
-}
+let derr = {};
+// function ssGen_dts(id, ss, t, type) {
+//   try {
+//     if (!t) t = 0;
+//     else if (!Number(t)) t = TimeFormat.toS(t);
+//     if (!dts[id]) dts[id] = 0;
+//     if (!derr[id]) derr[id] = false;
+//     const t_ret = TimeFormat.fromS(TimeFormat.toS(ss) + dts[id]);
+//     if (type.match("_l") || type.match("丢失")) dts[id] += Number(t);
+//     return t_ret + (derr[id] ? "(可能有误)" : "");
+//   } catch (error) {
+//     derr[id] = true;
+//     console.error(error);
+//   }
+//   return "非法格式，此行数据可能有误";
+// }
 
-const show_watch = ref(false);
-const show_contribute = ref(false);
+let dts2 = {};
+let derr2 = {};
+
+const show_watch = ref(true);
+const show_contribute = ref(true);
 // const count = ref(0);
 </script>
 
@@ -62,6 +69,7 @@ const show_contribute = ref(false);
           type="checkbox"
           class="ds-toggle ds-toggle-accent"
           :checked="show_watch"
+          :disabled="show_contribute"
           @click="show_watch = !show_watch"
         />
         <span class="label-text"><--点击此处</span>
@@ -74,6 +82,7 @@ const show_contribute = ref(false);
           type="checkbox"
           class="ds-toggle ds-toggle-accent"
           :checked="show_contribute"
+          :disabled="show_contribute"
           @click="show_contribute = !show_contribute"
         />
         <span class="label-text"><--点击此处</span>
@@ -142,9 +151,17 @@ const show_contribute = ref(false);
                     </td>
                     <td>{{ clip.ss }}</td>
                     <td>
-                      {{
-                        ssGen_dts(`${time}|${ani.title}|${ep}`, clip.ss, clip.t)
-                      }}
+                      <ssRealGen
+                        :ss="clip.ss"
+                        :t="clip.t"
+                        :time="time"
+                        :title="ani.title"
+                        :ep="ep"
+                        :type="clip.type"
+                        :source="clip.source"
+                        :dts="dts"
+                        :derr="derr"
+                      />
                     </td>
                     <td>
                       <typeCodeGen :type="typeTrans(clip.type).split(' ')" />
@@ -161,6 +178,10 @@ const show_contribute = ref(false);
                         :time="time"
                         :title="ani.title"
                         :ep="ep"
+                        :type="clip.type"
+                        :source="clip.source"
+                        :dts="dts2"
+                        :derr="derr2"
                       />
                       <!-- <code>{{
                     cGen(clip.ss, clip.t, `${time}|${ani.title}|${ep}`)
