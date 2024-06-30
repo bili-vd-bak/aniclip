@@ -17,7 +17,6 @@
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
     "allowImportingTsExtensions": true
   },
   "include": [

@@ -1,5 +1,6 @@
 export default function typeTrans(type: t) {
   return type
+    .trim()
     .replaceAll("v_", "画面")
     .replaceAll("s_", "字幕")
     .replaceAll("a_", "音频")
