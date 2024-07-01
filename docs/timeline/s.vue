@@ -93,7 +93,7 @@ const show_contribute = ref(true);
   st:{{ set_time }} t:{{ time }} -->
   <div v-for="(ss, time) in ani" :key="time">
     <div v-if="!set_time || time === set_time">
-      <HA :name="time" :id="time" lv="2">{{ time }}</HA>
+      <HA :name="time" :id="time" lv="1">{{ time }}</HA>
       <Link
         v-if="!isASL(time)"
         href="https://github.com/bili-vd-bak/aniclip-src/new/master"
@@ -111,7 +111,7 @@ const show_contribute = ref(true);
           >
         </div>
         <div v-else>
-          <HA :name="ani.title" :id="ani.title" lv="3">{{ ani.title }}</HA>
+          <HA :name="ani.title" :id="ani.title" lv="2">{{ ani.title }}</HA>
           <img width="180" :src="ani.cover" v-if="ani.cover" />
           <p v-if="ani.tips"><b>提示</b>：{{ ani.tips }}</p>
           <details>
