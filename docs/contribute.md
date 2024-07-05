@@ -71,10 +71,10 @@ cover = "<番剧海报/封面链接:str>" # 此行可不填
 1. 生成命令：
 
 ```zsh
-ffmpeg -ss 01:36 -i "{视频(path/url)}" -t 00:12 -c copy "./2024.4|夜晚的水母不会游泳/1-01:41.mp4"
+ffmpeg -ss 01:36 -i "{视频路径或链接}" -t 00:12 -c copy "./2024.4|夜晚的水母不会游泳/1-01:41.mp4"
 ```
 
-2. 将 `{视频(path/url)}`替换为 本地视频路径/远程视频直链
+2. 将 `{视频路径或链接}`替换为 本地视频路径/远程视频直链
 
 ```zsh
 ffmpeg -ss 01:36 /
@@ -86,7 +86,7 @@ ffmpeg -ss 01:36 /
 
 :::
 
-4. 上传视频片段以获取视频链接；您可在[此处](https://alist.xrzyun.eu.org/aniclip-upload)上传。  
+4. 上传视频片段以获取视频链接；您可在[此处](https://alist.xrzyun.eu.org/aniclip-upload)或任何无需登录的平台上传。  
 5. 将此链接填入该集`clip = ""`中。  
 
 ```toml
