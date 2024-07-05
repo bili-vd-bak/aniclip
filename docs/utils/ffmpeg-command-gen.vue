@@ -5,6 +5,7 @@
 
 <script setup>
 import TimeFormat from "hh-mm-ss";
+import validName from "../utils/get-valid-name.ts";
 // import { ref } from "vue";
 
 // const show = ref(true);
@@ -46,9 +47,9 @@ function cGen(ss, t, time, title, ep, type, source, dts, derr) {
     if (!derr[id]) derr[id] = false;
     const c = `ffmpeg -ss ${TimeFormat.fromS(
       TimeFormat.toS(ss) + dts[id] - 5
-    )} -i "{视频路径或链接}" -t ${TimeFormat.fromS(
+    )} -i "${"$"}{视频路径或链接}" -t ${TimeFormat.fromS(
       Number(t) + 10
-    )} -c copy "./${ep}-${ss}.mp4"`;
+    )} -c copy "./${validName(`${ep}-${ss}`)}.mp4"`;
     if (type.match("_l") || type.match("丢失")) dts[id] += Number(t);
     return c;
   } catch (error) {
