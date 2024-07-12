@@ -33,6 +33,25 @@ function genSource(source) {
   else return source;
 }
 
+/**
+ * Clip模板
+ * @param {string} clip
+ * @param {string} time
+ * @param {string} title
+ * @param {string} ep
+ * @param {string} ss
+ */
+function genClip(clip, time, title, ep, ss) {
+  if (!clip) return "#";
+  else
+    return clip.replaceAll(
+      "TP-main::",
+      `https://alist.xrzyun.eu.org/aniclip-upload/${time}/${title}/${validName(
+        `${ep}-${ss}`
+      )}.mp4`
+    );
+}
+
 let dts = {};
 let derr = {};
 // function ssGen_dts(id, ss, t, type) {
@@ -71,7 +90,7 @@ const show_contribute = ref(true);
           :disabled="show_contribute"
           @click="show_watch = !show_watch"
         />
-        <span class="label-text"><--点击此处</span>
+        <span class="label-text"><--点击此处(已锁定)</span>
       </label>
     </div>
     <div class="ds-form-control">
@@ -84,7 +103,7 @@ const show_contribute = ref(true);
           :disabled="show_contribute"
           @click="show_contribute = !show_contribute"
         />
-        <span class="label-text"><--点击此处</span>
+        <span class="label-text"><--点击此处(已锁定)</span>
       </label>
     </div>
   </div>
@@ -167,7 +186,11 @@ const show_contribute = ref(true);
                     </td>
                     <td>{{ clip.t }}</td>
                     <td v-if="show_watch">
-                      <Link :href="clip.clip" v-if="clip.clip">跳转</Link>
+                      <Link
+                        :href="genClip(clip.clip, time, ani.title, ep, clip.ss)"
+                        v-if="clip.clip"
+                        >跳转</Link
+                      >
                       <p v-else>-</p>
                     </td>
                     <td v-if="show_contribute">
