@@ -46,7 +46,7 @@ function genClip(clip, time, title, ep, ss) {
   else
     return clip.replaceAll(
       "TP-main::",
-      `https://alist.xrzyun.eu.org/aniclip-upload/${time}/${title}/${validName(
+      `https://alist.xrzyun.eu.org/aniclip-upload/${time}/${title}/${ep}/${validName(
         `${ep}-${ss}`
       )}.mp4`
     );
