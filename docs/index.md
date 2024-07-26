@@ -4,6 +4,17 @@ import { data as time } from "./time.data.ts"
 
 # AniClip 番剧删减汇总
 
+AniClip 番剧删减汇总：  
+鉴于大多数流媒体平台(bilibili等)均对番剧有过度删减的现象，悲痛万分，建此平台，帮助各位正版受害者快捷观看到番剧的缺失/修改部分。无论是画面和谐、片段消失术，还是字幕翻译中体现的语言艺术，我们都会纠正回来，还一个正常的追番体验(个鬼)。  
+这是一个方便各位 *正版受害者* 快捷观看删减片段(~~看看自己有多么大冤种~~) 的网站，尽情享受吧！  
+
+## 灵感
+
+1. 有很多人不会/懒得去找和下载完整版，这里提供了一个方便的平台。  
+2. 其二是个人在存档番剧时有来自B站的源，而弹幕对删减的吐槽等也是一种文化现象，值得收录，而也没必要再存一份别的源，故截取一份对应片段留存。  
+
+## 公告
+
 最近构建时间：`{{ new Date(time?.build).toLocaleString("zh-Hans-CN") }}`[`{{ new Date(time?.build) }}`]  
 最近更新时间：`{{ new Date(time?.src_update).toLocaleString("zh-Hans-CN") }}`[`{{ new Date(time?.src_update) }}`]  
 
