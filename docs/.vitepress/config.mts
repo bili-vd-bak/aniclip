@@ -4,16 +4,22 @@ import {
   chineseSearchOptimize,
   pagefindPlugin,
 } from "vitepress-plugin-pagefind";
+// import { RSSOptions, RssPlugin } from "vitepress-plugin-rss";
 import { BiDirectionalLinks } from "@nolebase/markdown-it-bi-directional-links";
 import { transformHeadMeta } from "@nolebase/vitepress-plugin-meta";
 import { InlineLinkPreviewElementTransform } from "@nolebase/vitepress-plugin-inline-link-preview/markdown-it";
 
-// https://vitepress.vuejs.org/config/app-configs
-export default defineConfig({
-  title: "AniClip 番剧删减汇总",
-  description:
+const title = "AniClip 番剧删减汇总",
+  description =
     "一个番剧删减汇总平台：鉴于大多数流媒体平台(bilibili等)均对番剧有过度删减的现象，悲痛万分，建此平台，帮助各位正版受害者快捷观看到番剧的缺失/修改部分。无论是画面和谐、片段消失术，还是字幕翻译中体现的语言艺术，我们都会纠正回来，还一个正常的追番体验(个鬼)。" +
     "2024年7月新番火热收录中：亚托莉(atri)、不时用俄语小声说真心话的邻桌艾莉同学、疑似后宫......",
+  copyright = "Copyright © 2024-present bili-vd-bak",
+  baseUrl = "https://aniclip.xrzyun.eu.org";
+
+// https://vitepress.vuejs.org/config/app-configs
+export default defineConfig({
+  title,
+  description,
   lang: "zh-CN",
   head: [
     [
@@ -25,7 +31,7 @@ export default defineConfig({
   metaChunk: true,
   lastUpdated: true,
   sitemap: {
-    hostname: "https://aniclip.xrzyun.eu.org",
+    hostname: baseUrl,
   },
   themeConfig: {
     sidebar,
@@ -42,7 +48,7 @@ export default defineConfig({
     ],
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright © 2024-present bili-vd-bak",
+      copyright,
     },
     lastUpdated: {
       text: "上次更新本页日期",
@@ -77,10 +83,7 @@ export default defineConfig({
       exclude: ["@nolebase/vitepress-plugin-enhanced-readabilities/client"],
     },
     ssr: {
-      noExternal: [
-        "@nolebase/vitepress-plugin-enhanced-readabilities",
-        "@nolebase/vitepress-plugin-highlight-targeted-heading",
-      ],
+      noExternal: ["@nolebase/*"],
     },
     plugins: [
       pagefindPlugin({
@@ -97,6 +100,12 @@ export default defineConfig({
           },
         },
       }),
+      // RssPlugin({
+      //   title,
+      //   baseUrl,
+      //   copyright,
+      //   description,
+      // } as RSSOptions),
     ],
   },
 });
