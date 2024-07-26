@@ -30,8 +30,8 @@
     }
   },
   "dependencies": {
-    "@std/toml": "npm:@jsr/std__toml@^0.224.1",
-    "@std/yaml": "npm:@jsr/std__yaml@^0.224.3",
+    "@std/toml": "npm:@jsr/std__toml@1.0.0-rc.4",
+    "@std/yaml": "npm:@jsr/std__yaml@1.0.0-rc.4",
     "@types/fs-extra": "^11.0.4",
     "chokidar": "^3.6.0",
     "fs-extra": "^11.2.0",

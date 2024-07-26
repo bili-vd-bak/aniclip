@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@std/toml':
-        specifier: npm:@jsr/std__toml@^0.224.1
-        version: '@jsr/std__toml@0.224.1'
+        specifier: npm:@jsr/std__toml@1.0.0-rc.4
+        version: '@jsr/std__toml@1.0.0-rc.4'
       '@std/yaml':
-        specifier: npm:@jsr/std__yaml@^0.224.3
-        version: '@jsr/std__yaml@0.224.3'
+        specifier: npm:@jsr/std__yaml@1.0.0-rc.4
+        version: '@jsr/std__yaml@1.0.0-rc.4'
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -370,11 +370,11 @@ packages:
   '@jsr/std__collections@1.0.5':
     resolution: {integrity: sha512-bL+K7aDs6uozic3U6qw0ll3zAmIO/sxb+764Dbqiavv/yo4qXrTjJf75wkkPWUECsXvIjLm34xAone/O0P0tyw==, tarball: https://npm.jsr.io/~/11/@jsr/std__collections/1.0.5.tgz}
 
-  '@jsr/std__toml@0.224.1':
-    resolution: {integrity: sha512-al+V6wRyirXyW5lLdiA/KhFPmUdUVJBkU3AfCIRTGvZf3BJrt2TEiuj/tHOBNu5j+JMRpQkTP+hOuUEO0WfAIA==, tarball: https://npm.jsr.io/~/11/@jsr/std__toml/0.224.1.tgz}
+  '@jsr/std__toml@1.0.0-rc.4':
+    resolution: {integrity: sha512-d6QZGWbeFhdD+U3I12Cc8+VZWPVQgYJ4A7V0T29p5TQExlMkUDffXkhb5r4gx4AqAOWHPqVligzBrzvKJJIAGw==, tarball: https://npm.jsr.io/~/11/@jsr/std__toml/1.0.0-rc.4.tgz}
 
-  '@jsr/std__yaml@0.224.3':
-    resolution: {integrity: sha512-G4ZoM7Y0Y/rv0Jm+RVlWKmZXxZdL+cOxNwxx0Fv3DqkSdCxNvyls6fw7ai9cYWnhRQcPrnd8cTc0WMTgBTXKIg==, tarball: https://npm.jsr.io/~/11/@jsr/std__yaml/0.224.3.tgz}
+  '@jsr/std__yaml@1.0.0-rc.4':
+    resolution: {integrity: sha512-9Rk3yX/U4wbrP/9JqCwPtl79Ey1NmGhPUTvpaxaRrIVWD5pxXhPWpAvwc34e3+4EkzC75dDEDGZXyTD3txvK3g==, tarball: https://npm.jsr.io/~/11/@jsr/std__yaml/1.0.0-rc.4.tgz}
 
   '@lit-labs/ssr-dom-shim@1.2.0':
     resolution: {integrity: sha512-yWJKmpGE6lUURKAaIltoPIE/wrbY3TEkqQt+X0m+7fQNnAv0keydnYvbiJFP1PnMhizmIWRWOG5KLhYyc/xl+g==}
@@ -1935,11 +1935,11 @@ snapshots:
 
   '@jsr/std__collections@1.0.5': {}
 
-  '@jsr/std__toml@0.224.1':
+  '@jsr/std__toml@1.0.0-rc.4':
     dependencies:
       '@jsr/std__collections': 1.0.5
 
-  '@jsr/std__yaml@0.224.3': {}
+  '@jsr/std__yaml@1.0.0-rc.4': {}
 
   '@lit-labs/ssr-dom-shim@1.2.0': {}
 
