@@ -15,6 +15,9 @@ import "@nolebase/vitepress-plugin-highlight-targeted-heading/client/style.css";
 
 import "@nolebase/vitepress-plugin-enhanced-mark/client/style.css";
 
+import { NolebaseInlineLinkPreviewPlugin } from "@nolebase/vitepress-plugin-inline-link-preview/client";
+import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
+
 import { EnhanceAppContext, useData, useRoute } from "vitepress";
 import { toRefs, h } from "vue";
 
@@ -33,12 +36,8 @@ export default {
       "layout-top": () => [h(NolebaseHighlightTargetedHeading)],
     });
   },
-  enhanceApp(ctx: EnhanceAppContext) {
-    // ctx.app.provide(InjectionKey, {
-    //   // 配置...
-    // } as Options);
-
-    DefaultTheme.enhanceApp(ctx);
+  enhanceApp({ app }) {
+    app.use(NolebaseInlineLinkPreviewPlugin);
   },
   setup() {
     // 获取前言和路由

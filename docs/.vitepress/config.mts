@@ -6,11 +6,14 @@ import {
 } from "vitepress-plugin-pagefind";
 import { BiDirectionalLinks } from "@nolebase/markdown-it-bi-directional-links";
 import { transformHeadMeta } from "@nolebase/vitepress-plugin-meta";
+import { InlineLinkPreviewElementTransform } from "@nolebase/vitepress-plugin-inline-link-preview/markdown-it";
 
 // https://vitepress.vuejs.org/config/app-configs
 export default defineConfig({
   title: "AniClip 番剧删减汇总",
-  description: "一个番剧删减汇总平台。",
+  description:
+    "一个番剧删减汇总平台：鉴于大多数流媒体平台(bilibili等)均对番剧有过度删减的现象，悲痛万分，建此平台，帮助各位正版受害者快捷观看到番剧的缺失/修改部分。无论是画面和谐、片段消失术，还是字幕翻译中体现的语言艺术，我们都会纠正回来，还一个正常的追番体验(个鬼)。" +
+    "2024年7月新番火热收录中：亚托莉(atri)、不时用俄语小声说真心话的邻桌艾莉同学、疑似后宫......",
   lang: "zh-CN",
   head: [
     [
@@ -59,11 +62,8 @@ export default defineConfig({
       lazyLoading: true,
     },
     config: (md) => {
-      md.use(
-        BiDirectionalLinks({
-          dir: "docs",
-        })
-      );
+      md.use(BiDirectionalLinks({ dir: "docs" }));
+      md.use(InlineLinkPreviewElementTransform);
     },
   },
   async transformHead(context) {
