@@ -46,9 +46,9 @@ function cGen(ss, t, time, title, ep, type, source, dts, derr) {
     if (!dts[id]) dts[id] = 0;
     if (!derr[id]) derr[id] = false;
     const c = `ffmpeg -ss ${TimeFormat.fromS(
-      TimeFormat.toS(ss) + dts[id] - 5
+      TimeFormat.toS(ss) + dts[id] - 7
     )} -i ${"$"}{视频路径或链接} -t ${TimeFormat.fromS(
-      Number(t) + 10
+      Number(t) + 14
     )} -c copy "./${validName(`${ep}-${ss}`)}.mp4"`;
     if (type.match("_l") || type.match("丢失")) dts[id] += Number(t);
     return c;
