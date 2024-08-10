@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 cache
+public/data.json
+public/timeline/

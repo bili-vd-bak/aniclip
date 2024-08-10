@@ -40,6 +40,21 @@ AniClip 番剧删减汇总：
 您可以按照以下教程向我们提供数据或上传被删减的番剧片段。  
 [[contribute|点击查看贡献指南]]
 
+## 基于API的查询方式
+
+### JSON
+
+类型请自行查看JSON文件或`bili-vd-bak/aniclip`下的`docs/timeline/toml.data.ts`。  
+
+以下链接任选:  
+
+```url
+https://aniclip.xrzyun.eu.org/data.json
+(选择季度)
+(仅需在timeline任意页面后加上 .json 即可)
+https://aniclip.xrzyun.eu.org/timeline/{季度}.json
+```
+
 ## LICENSE 许可证
 
 本仓库中：  
