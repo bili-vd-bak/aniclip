@@ -3,11 +3,14 @@ import * as toml from "@std/toml";
 import { defineLoader } from "vitepress";
 import path from "path";
 
-import typeTrans from "../utils/typeTrans.ts";
-import validName from "../utils/get-valid-name.ts";
+import typeTrans from "../utils/typeTrans";
+import validName from "../utils/get-valid-name";
 import ssRealGen from "../utils/ss-real-gen";
 import ffmpegCommandGen from "../utils/ffmpeg-command-gen";
 import rootDir from "app-root-path";
+import { timeGetter } from "../time.data";
+
+const times = await timeGetter();
 
 type t = "v_l" | "v_c" | "s_l" | "s_c" | "s_e" | "a_l";
 
@@ -177,23 +180,28 @@ export function preGen(list: { [key: string]: Data[] }) {
       }
     });
   }
-  return list;
+  return { times, data: list };
 }
 
 function preGen2File(list: { [key: string]: Data[] }) {
-  const gened_list = preGen(list);
+  const gened_data = preGen(list),
+    gened_list = gened_data.data;
   // fs.writeJsonSync(path.resolve(rootDir.path, "src/data.json"), preGen(gened_list));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public"));
   fs.writeJsonSync(
     path.resolve(rootDir.path, "docs/public/data.json"),
-    gened_list
+    gened_data
   );
   fs.removeSync(path.resolve(rootDir.path, "docs/public/timeline"));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public/timeline"));
   for (const [time, ss] of Object.entries(gened_list)) {
     fs.writeJsonSync(
       path.resolve(rootDir.path, `docs/public/timeline/${time}.json`),
-      { [time]: ss }
+      { times, data: { [time]: ss } }
     );
   }
+  fs.copySync(
+    path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json"),
+    path.resolve(rootDir.path, "docs/public/timeline/ASL.json")
+  );
 }
