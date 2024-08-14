@@ -1,4 +1,5 @@
 <script setup>
+import { data as time } from "./time.data.ts"
 import S from "./timeline/s.vue"
 </script>
 
@@ -8,5 +9,7 @@ import S from "./timeline/s.vue"
 由于 汇总酱 的网页未规范格式化，抓取数据可能有误。  
 本页未经人工核准，仅供参考。  
 :::
+
+最近更新时间：`{{ new Date(time?.src_update).toLocaleString("zh-Hans-CN") }}`[`{{ new Date(time?.src_update) }}`]  
 
 <S set_time="AutoSyncLatest" />

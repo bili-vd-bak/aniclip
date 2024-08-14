@@ -34,6 +34,7 @@ export default defineConfig({
     hostname: baseUrl,
   },
   themeConfig: {
+    logo: "/logo.png",
     sidebar,
     outline: {
       label: "页面大纲",

@@ -1,8 +1,9 @@
-import fs, { link } from "fs-extra";
+import fs from "fs-extra";
 import path from "path";
+import rootDir from "app-root-path";
 
 const tls: string[] = [];
-fs.readdirSync("src/timeline").forEach((fn) => {
+fs.readdirSync(path.resolve(rootDir.path, "src/timeline")).forEach((fn) => {
   fn = path.basename(fn, ".toml").split("|")[0];
   tls.includes(fn) ? "" : tls.push(fn);
 });
