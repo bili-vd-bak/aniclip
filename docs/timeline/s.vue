@@ -109,7 +109,7 @@ const show_contribute = ref(true);
   </div>
   <!-- <button @click="count++">You clicked me {{ count }} times.</button>
   st:{{ set_time }} t:{{ time }} -->
-  <div v-for="(ss, time) in ani" :key="time">
+  <div v-for="(ss, time) in ani.data" :key="time">
     <div v-if="!set_time || time === set_time">
       <HA :name="time" :id="time" lv="1">{{ time }}</HA>
       <Link
@@ -136,7 +136,7 @@ const show_contribute = ref(true);
             <summary>
               <b>点击展开表格</b>(含 片段观看、FFMpeg命令生成、详情等)
             </summary>
-            <div v-for="(clips, ep) in ani.list" :key="ep">
+            <div v-for="(clips, ep) in ani.list_gen" :key="ep">
               <table>
                 <thead>
                   <tr>
@@ -159,42 +159,28 @@ const show_contribute = ref(true);
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="clip in clips" :key="clip.ss">
-                    <td>{{ ep }}</td>
+                  <tr v-for="clip in clips" :key="clip['删减位置(删减视频)']">
+                    <td>{{ clip.集数 }}</td>
                     <td>
                       <Link v-if="clip.source" :href="clip.source">{{
-                        genSource(clip.source)
+                        clip.来源
                       }}</Link>
-                      <p v-else>{{ genSource(clip.source) }}</p>
+                      <p v-else>{{ clip.来源 }}</p>
                     </td>
-                    <td>{{ clip.ss }}</td>
+                    <td>{{ clip["删减位置(删减视频)"] }}</td>
+                    <td>{{ clip["删减位置(完整视频)"] }}</td>
                     <td>
-                      <ssRealGen
-                        :ss="clip.ss"
-                        :t="clip.t"
-                        :time="time"
-                        :title="ani.title"
-                        :ep="ep"
-                        :type="clip.type"
-                        :source="clip.source"
-                        :dts="dts"
-                        :derr="derr"
-                      />
+                      <typeCodeGen :type="clip.删减类型" />
                     </td>
-                    <td>
-                      <typeCodeGen :type="typeTrans(clip.type).split(' ')" />
-                    </td>
-                    <td>{{ clip.t }}</td>
+                    <td>{{ clip["删减长度(秒)"] }}</td>
                     <td v-if="show_watch">
-                      <Link
-                        :href="genClip(clip.clip, time, ani.title, ep, clip.ss)"
-                        v-if="clip.clip"
+                      <Link :href="clip.观看删减片段" v-if="clip.观看删减片段"
                         >跳转</Link
                       >
                       <p v-else>-</p>
                     </td>
                     <td v-if="show_contribute">
-                      <ffmpegCommandGen
+                      <!-- <ffmpegCommandGen
                         :ss="clip.ss"
                         :t="clip.t"
                         :time="time"
@@ -204,12 +190,10 @@ const show_contribute = ref(true);
                         :source="clip.source"
                         :dts="dts2"
                         :derr="derr2"
-                      />
-                      <!-- <code>{{
-                    cGen(clip.ss, clip.t, `${time}|${ani.title}|${ep}`)
-                  }}</code> -->
+                      /> -->
+                      <code>{{ clip["贡献片段截取(FFMpeg)"] }}</code>
                     </td>
-                    <td>{{ clip.tips }}</td>
+                    <td>{{ clip.提示 }}</td>
                   </tr>
                 </tbody>
               </table>

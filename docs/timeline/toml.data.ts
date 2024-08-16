@@ -8,7 +8,7 @@ import validName from "../utils/get-valid-name";
 import ssRealGen from "../utils/ss-real-gen";
 import ffmpegCommandGen from "../utils/ffmpeg-command-gen";
 import rootDir from "app-root-path";
-import { timeGetter } from "../time.data";
+import { timeGetter, Data as Time } from "../time.data";
 
 const times = await timeGetter();
 
@@ -25,6 +25,7 @@ interface Ep {
 
 interface List_gen {
   集数: string;
+  source?: string;
   来源?: string;
   "删减位置(删减视频)": string;
   "删减位置(完整视频)": string;
@@ -50,7 +51,14 @@ export interface Data {
   list_gen?: { [key: string]: List_gen[] };
 }
 
-declare const data: Data;
+export interface NewData {
+  time: Time;
+  data: {
+    [key: string]: Data[];
+  };
+}
+
+declare const data: NewData;
 export { data };
 
 export default defineLoader({
@@ -77,8 +85,9 @@ export default defineLoader({
         list: tmp,
       });
     });
-    preGen2File(list);
-    return list;
+    const gened_data = preGen(list);
+    preGen2File(gened_data);
+    return gened_data;
   },
 });
 
@@ -139,6 +148,7 @@ export function preGen(list: { [key: string]: Data[] }) {
             list[time][index].list_gen[ep] = [];
           list[time][index].list_gen[ep].push({
             集数: ep as unknown as string,
+            source: clip.source,
             来源: genSource(clip.source),
             "删减位置(删减视频)": clip.ss,
             "删减位置(完整视频)": ssRealGen(
@@ -183,9 +193,8 @@ export function preGen(list: { [key: string]: Data[] }) {
   return { times, data: list };
 }
 
-function preGen2File(list: { [key: string]: Data[] }) {
-  const gened_data = preGen(list),
-    gened_list = gened_data.data;
+function preGen2File(gened_data: { data: { [key: string]: Data[] } }) {
+  const gened_list = gened_data.data;
   // fs.writeJsonSync(path.resolve(rootDir.path, "src/data.json"), preGen(gened_list));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public"));
   fs.writeJsonSync(
