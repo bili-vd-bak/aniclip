@@ -7,7 +7,7 @@ import Link from "vitepress/dist/client/theme-default/components/VPLink.vue";
 import HA from "../utils/head-anchor.vue";
 import { ref } from "vue";
 // import { useData } from "vitepress";
-import Badge from "vitepress/dist/client/theme-default/components/VPBadge.vue";
+import { VPBadge } from "vitepress/theme";
 
 defineProps(["set_time", "min"]);
 // const { isDark } = useData();
@@ -48,14 +48,14 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
         <tbody>
           <tr>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_all_pic = !show_all_pic"
                 :type="ShowToggle(show_all_pic)"
                 :text="ShowText(show_all_pic)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_all_tips = !show_all_tips"
                 :type="ShowToggle(show_all_tips)"
                 :text="ShowText(show_all_tips)"
@@ -82,56 +82,56 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
         <tbody>
           <tr>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_source = !show_source"
                 :type="ShowToggle(show_source)"
                 :text="ShowText(show_source)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_cut1 = !show_cut1"
                 :type="ShowToggle(show_cut1)"
                 :text="ShowText(show_cut1)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_cut2 = !show_cut2"
                 :type="ShowToggle(show_cut2)"
                 :text="ShowText(show_cut2)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_type = !show_type"
                 :type="ShowToggle(show_type)"
                 :text="ShowText(show_type)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_len = !show_len"
                 :type="ShowToggle(show_len)"
                 :text="ShowText(show_len)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_watch = !show_watch"
                 :type="ShowToggle(show_watch)"
                 :text="ShowText(show_watch)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_contribute = !show_contribute"
                 :type="ShowToggle(show_contribute)"
                 :text="ShowText(show_contribute)"
               />
             </td>
             <td>
-              <Badge
+              <VPBadge
                 @click="show_tips = !show_tips"
                 :type="ShowToggle(show_tips)"
                 :text="ShowText(show_tips)"
