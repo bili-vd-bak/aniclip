@@ -5,14 +5,14 @@ export interface Data {
   src_update: Date;
 }
 
-const timeGetter = async () => {
+const timeGetter = async (): Promise<Data> => {
   return {
     build: new Date(),
-    src_update: await fetch(
-      "https://api.github.com/repos/bili-vd-bak/aniclip-src"
-    )
-      .then((res) => res.json())
-      .then((res) => res.updated_at),
+    src_update: new Date(
+      await fetch("https://api.github.com/repos/bili-vd-bak/aniclip-src")
+        .then((res) => res.json())
+        .then((res) => res.updated_at)
+    ),
   };
 };
 

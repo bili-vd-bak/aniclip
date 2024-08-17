@@ -10,6 +10,14 @@ import ffmpegCommandGen from "../utils/ffmpeg-command-gen";
 import rootDir from "app-root-path";
 import { timeGetter, Data as Time } from "../time.data";
 
+import { Feed } from "feed";
+import {
+  title,
+  description,
+  copyright,
+  baseUrl,
+} from "../.vitepress/config.mjs";
+
 const times = await timeGetter();
 
 type t = "v_l" | "v_c" | "s_l" | "s_c" | "s_e" | "a_l";
@@ -53,10 +61,11 @@ export interface Data {
 }
 
 export interface NewData {
-  time: Time;
+  times: Time;
   data: {
     [key: string]: Data[];
   };
+  feed: Feed;
 }
 
 declare const data: NewData;
@@ -137,11 +146,38 @@ function genClip(
     );
 }
 
-export function preGen(list: { [key: string]: Data[] }) {
-  let dts = {},
+const isASL = (set_time) =>
+  set_time === "自动同步最新" ||
+  set_time === "ASL" ||
+  set_time === "AutoSyncLatest";
+
+export function preGen(list: { [key: string]: Data[] }): NewData {
+  const dts = {},
     derr = {},
     dts2 = {},
     derr2 = {};
+  const feed = new Feed({
+    title,
+    description,
+    id: baseUrl,
+    link: baseUrl,
+    language: "zh", // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
+    image: `${baseUrl}/logo.png`,
+    favicon: `${baseUrl}/logo.png`,
+    copyright,
+    updated: times.src_update, // optional, default = today
+    generator: "AniClip", // optional, default = 'Feed for Node.js'
+    feedLinks: {
+      json: `${baseUrl}/feed.json`,
+      atom: `${baseUrl}/atom.xml`,
+    },
+    author: {
+      name: "bili-vd-bak Team",
+      email: "aniclip@xrzyun.eu.org",
+      link: "https://www.xrzyun.eu.org/",
+    },
+  });
+  feed.addCategory("anime");
   for (const [time, ss] of Object.entries(list)) {
     ss.forEach((ani, index) => {
       list[time][index].list_gen = {};
@@ -190,20 +226,34 @@ export function preGen(list: { [key: string]: Data[] }) {
             提示: clip.tips,
           });
         });
+        const link = `${baseUrl}/${
+          (isASL(time) ? "ASL" : "timeline/" + time) +
+          "#" +
+          validName(ani.title).replaceAll(" ", "-")
+        }`;
+        const cont = `共计${clips.length}处删减/修改;由 aniclip.xrzyun.eu.org 生成;遵循 CC BY-NC-SA 4.0 协议共享`;
+        feed.addItem({
+          title: `AniClip | ${ani.title} | ${Number(ep) ? `第${ep}集` : ep}`,
+          id: link,
+          link,
+          description: cont,
+          content: cont,
+          date: new Date(ani.mtime),
+        });
       }
     });
   }
-  return { times, data: list };
+  return { times, data: list, feed };
 }
 
-function preGen2File(gened_data: { data: { [key: string]: Data[] } }) {
+function preGen2File(gened_data: NewData) {
   const gened_list = gened_data.data;
   // fs.writeJsonSync(path.resolve(rootDir.path, "src/data.json"), preGen(gened_list));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public"));
-  fs.writeJsonSync(
-    path.resolve(rootDir.path, "docs/public/data.json"),
-    gened_data
-  );
+  fs.writeJsonSync(path.resolve(rootDir.path, "docs/public/data.json"), {
+    times: gened_data.times,
+    data: gened_list,
+  });
   fs.removeSync(path.resolve(rootDir.path, "docs/public/timeline"));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public/timeline"));
   for (const [time, ss] of Object.entries(gened_list)) {
@@ -215,5 +265,17 @@ function preGen2File(gened_data: { data: { [key: string]: Data[] } }) {
   fs.copySync(
     path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json"),
     path.resolve(rootDir.path, "docs/public/timeline/ASL.json")
+  );
+  fs.writeJsonSync(
+    path.resolve(rootDir.path, "docs/public/feed.json"),
+    gened_data.feed.json1()
+  );
+  fs.writeFileSync(
+    path.resolve(rootDir.path, "docs/public/atom.xml"),
+    gened_data.feed.atom1()
+  );
+  fs.writeFileSync(
+    path.resolve(rootDir.path, "docs/public/feed.xml"),
+    gened_data.feed.rss2()
   );
 }

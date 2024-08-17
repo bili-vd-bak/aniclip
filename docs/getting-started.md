@@ -30,6 +30,26 @@ import { data as time } from "./time.data.ts"
 您可以按照以下教程向我们提供数据或上传被删减的番剧片段。  
 [[contribute|点击查看贡献指南]]
 
+## RSS订阅
+
+### RSS 2.0
+
+```url
+https://aniclip.xrzyun.eu.org/feed.xml
+```
+
+### Atom 1.0
+
+```url
+https://aniclip.xrzyun.eu.org/atom.xml
+```
+
+### JSON Feed 1.0
+
+```url
+https://aniclip.xrzyun.eu.org/feed.json
+```
+
 ## 基于API的查询方式
 
 ### JSON

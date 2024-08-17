@@ -9,7 +9,7 @@ import { BiDirectionalLinks } from "@nolebase/markdown-it-bi-directional-links";
 import { transformHeadMeta } from "@nolebase/vitepress-plugin-meta";
 import { InlineLinkPreviewElementTransform } from "@nolebase/vitepress-plugin-inline-link-preview/markdown-it";
 
-const title = "AniClip 番剧删减汇总",
+export const title = "AniClip 番剧删减汇总",
   description =
     "一个番剧删减汇总平台：鉴于大多数流媒体平台(bilibili等)均对番剧有过度删减的现象，悲痛万分，建此平台，帮助各位正版受害者快捷观看到番剧的缺失/修改部分。无论是画面和谐、片段消失术，还是字幕翻译中体现的语言艺术，我们都会纠正回来，还一个正常的追番体验(个鬼)。" +
     "2024年7月新番火热收录中：亚托莉(atri)、不时用俄语小声说真心话的邻桌艾莉同学、疑似后宫......",
@@ -45,6 +45,13 @@ export default defineConfig({
         icon: "github",
         link: "https://github.com/bili-vd-bak/aniclip",
         ariaLabel: "程序仓库",
+      },
+      {
+        icon: {
+          svg: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rss-fill" viewBox="0 0 16 16"><path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm1.5 2.5c5.523 0 10 4.477 10 10a1 1 0 1 1-2 0 8 8 0 0 0-8-8 1 1 0 0 1 0-2zm0 4a6 6 0 0 1 6 6 1 1 0 1 1-2 0 4 4 0 0 0-4-4 1 1 0 0 1 0-2zm.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>',
+        },
+        link: "/feed.xml",
+        ariaLabel: "RSS",
       },
     ],
     footer: {

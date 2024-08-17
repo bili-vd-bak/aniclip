@@ -26,3 +26,6 @@ dist-ssr
 cache
 docs/public/data.json
 docs/public/timeline/
+docs/public/feed.xml
+docs/public/atom.xml
+docs/public/feed.json
