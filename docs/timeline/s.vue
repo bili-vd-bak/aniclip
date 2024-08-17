@@ -176,6 +176,13 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
         </div>
         <div v-else>
           <HA :name="ani.title" :id="ani.title" lv="2">{{ ani.title }}</HA>
+          <p>
+            最近更新时间：<code>{{
+              new Date(ani.mtime).toLocaleString("zh-Hans-CN")
+            }}</code
+            >[<code>{{ new Date(ani.mtime) }}</code
+            >]
+          </p>
           <img width="160" :src="ani.cover" v-if="show_all_pic && ani.cover" />
           <p v-if="show_all_tips && ani.tips"><b>提示</b>：{{ ani.tips }}</p>
           <details>

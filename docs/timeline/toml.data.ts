@@ -49,6 +49,7 @@ export interface Data {
   cover?: string;
   list: { [key: string]: Ep[] | string | undefined };
   list_gen?: { [key: string]: List_gen[] };
+  mtime: Date;
 }
 
 export interface NewData {
@@ -69,6 +70,7 @@ export default defineLoader({
     // 可用于在主题布局中呈现列表。
     const list: { [key: string]: Data[] } = {};
     watchedFiles.reverse().forEach((file) => {
+      const mtime = fs.statSync(file).mtime;
       const [time, title] = path.basename(file, ".toml").split("|");
       const toml_raw = toml.parse(
         fs.readFileSync(file, "utf-8")
@@ -83,6 +85,7 @@ export default defineLoader({
         tips: toml_raw.tips,
         cover: toml_raw.cover,
         list: tmp,
+        mtime,
       });
     });
     const gened_data = preGen(list);
