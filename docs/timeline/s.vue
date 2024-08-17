@@ -43,6 +43,7 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
           <tr>
             <th>季度图片</th>
             <th>季度提示</th>
+            <th>预设(文字版最合适)</th>
           </tr>
         </thead>
         <tbody>
@@ -59,6 +60,16 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
                 @click="show_all_tips = !show_all_tips"
                 :type="ShowToggle(show_all_tips)"
                 :text="ShowText(show_all_tips)"
+              />
+            </td>
+            <td>
+              <VPBadge
+                @click="
+                  show_source = !show_source;
+                  show_watch = !show_watch;
+                "
+                type="danger"
+                text="切换"
               />
             </td>
           </tr>
@@ -219,6 +230,30 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
               <!-- <pre><code>{{ clips }}</code></pre> -->
             </div>
           </details>
+          <details>
+            <summary><b>点击展开文字版</b></summary>
+            <VPBadge
+              @click="
+                show_source = !show_source;
+                show_watch = !show_watch;
+              "
+              type="danger"
+              text="切换显示设置预设(文字版模式)"
+            />
+            <div v-for="(clips, ep) in ani.list_gen" :key="ep">
+              <h5>{{ Number(ep) ? `第${ep}集` : ep }}</h5>
+              <div class="language-text vp-adaptive-theme">
+                <button title="Copy Code" class="copy"></button
+                ><span class="lang">{{ Number(ep) ? `第${ep}集` : ep }}</span>
+                <pre
+                  class="shiki shiki-themes github-light github-dark vp-code"
+                  tabindex="0"
+                ><code><span class="line"></span><span v-if="show_source">来源</span> <span v-if="show_cut1">删减位置(删减视频)</span> <span v-if="show_cut2">删减位置(完整视频)</span> <span v-if="show_type">删减类型</span> <span v-if="show_len">删减长度(秒)</span> <span v-if="show_watch">AniClip片段截取</span>
+<span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="show_source">{{ clip.来源 }}</span>  <span v-if="show_cut1">{{ clip["删减位置(删减视频)"] }}</span>            <span v-if="show_cut2">{{ clip["删减位置(完整视频)"] }}</span>          <span v-if="show_type">{{ clip.删减类型 }}</span>   <span v-if="show_len">{{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span>             <span v-if="show_watch">{{ clip.观看删减片段?"有":"无" }}</span>
+</span></code></pre>
+              </div>
+            </div>
+          </details>
           <Link
             v-if="!isASL(time)"
             :href="
@@ -239,8 +274,4 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
   <!-- <pre><code>{{ ani }}</code></pre> -->
 </template>
 
-<style>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-</style>
+<style></style>
