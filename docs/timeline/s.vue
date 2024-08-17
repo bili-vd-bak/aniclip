@@ -248,9 +248,24 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
                 <pre
                   class="shiki shiki-themes github-light github-dark vp-code"
                   tabindex="0"
-                ><code><span class="line"><span v-if="show_source">来源</span> <span v-if="show_cut1">删减位置(删减视频)</span> <span v-if="show_cut2">删减位置(完整视频)</span> <span v-if="show_type">删减类型</span> <span v-if="show_len">删减长度(秒)</span> <span v-if="show_watch">AniClip片段截取</span></span>
-<span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="show_source">{{ clip.来源 }}</span>  <span v-if="show_cut1">{{ clip["删减位置(删减视频)"] }}</span>            <span v-if="show_cut2">{{ clip["删减位置(完整视频)"] }}</span>          <span v-if="show_type">{{ clip.删减类型 }}</span>   <span v-if="show_len">{{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span>             <span v-if="show_watch">{{ clip.观看删减片段?"有":"无" }}</span>
+                ><code><span class="line"><span v-if="show_source">来源</span><span v-if="show_cut1"> 删减位置(删减视频)</span><span v-if="show_cut2"> 删减位置(完整视频)</span><span v-if="show_type"> 删减类型</span><span v-if="show_len"> 删减长度(秒)</span><span v-if="show_watch"> AniClip片段截取</span></span>
+<span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="show_source">{{ clip.来源 }}</span><span v-if="show_cut1">  {{ clip["删减位置(删减视频)"] }}</span><span v-if="show_cut2">            {{ clip["删减位置(完整视频)"] }}</span><span v-if="show_type">          {{ clip.删减类型 }}</span><span v-if="show_len">   {{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span><span v-if="show_watch">             {{ clip.观看删减片段?"有":"无" }}</span>
 </span><span class="line"><span>共计{{ clips.length }}处删减/修改;由 aniclip.xrzyun.eu.org 生成;遵循 CC BY-NC-SA 4.0 协议共享</span></span></code></pre>
+              </div>
+            </div>
+          </details>
+          <details>
+            <summary><b>点击展开快速贡献</b>(命令生成)</summary>
+            <div v-for="(clips, ep) in ani.list_gen" :key="ep">
+              <h5>{{ Number(ep) ? `第${ep}集` : ep }}</h5>
+              <div class="language-zsh vp-adaptive-theme">
+                <button title="Copy Code" class="copy"></button
+                ><span class="lang">zsh</span>
+                <pre
+                  class="shiki shiki-themes github-light github-dark vp-code"
+                  tabindex="0"
+                ><code><span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span>{{ clip["贡献片段截取(FFMpeg)"] }}</span>
+</span></code></pre>
               </div>
             </div>
           </details>
