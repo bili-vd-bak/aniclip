@@ -1,16 +1,13 @@
 <script setup>
-// import { ref } from "vue";
 import { data as ani } from "./toml.data.ts";
 import validName from "../utils/get-valid-name.ts";
 import typeCodeGen from "../utils/type-code-gen.vue";
 import Link from "vitepress/dist/client/theme-default/components/VPLink.vue";
 import HA from "../utils/head-anchor.vue";
 import { ref } from "vue";
-// import { useData } from "vitepress";
 import { VPBadge } from "vitepress/theme";
 
 defineProps(["set_time", "min"]);
-// const { isDark } = useData();
 
 const isASL = (set_time) =>
   set_time === "自动同步最新" ||
@@ -34,11 +31,13 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
 
 <template>
   <div v-if="min !== 'on'">
-    <HA name="设置" id="settings" lv="2" />
     <details>
       <summary><b>设置(点击展开)</b></summary>
-      <HA name="设置 全局 显示" id="settings-all" lv="3" />
       <table>
+        <caption>
+          <b>全局</b>
+          显示
+        </caption>
         <thead>
           <tr>
             <th>季度图片</th>
@@ -75,8 +74,11 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
           </tr>
         </tbody>
       </table>
-      <HA name="设置 表格/文字 显示" id="settings-table" lv="3" />
       <table>
+        <caption>
+          <b>表格/文字</b>
+          显示
+        </caption>
         <thead>
           <tr>
             <!-- <th>集数</th> -->
@@ -155,7 +157,7 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
   </div>
   <div v-for="(ss, time) in ani.data" :key="time">
     <div v-if="!set_time || time === set_time">
-      <HA :name="time" :id="time" lv="2">{{ time }}</HA>
+      <HA :name="time" :id="time" lv="1">{{ time }}</HA>
       <Link
         v-if="!isASL(time)"
         href="https://github.com/bili-vd-bak/aniclip-src/new/master"
@@ -173,8 +175,8 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
           >
         </div>
         <div v-else>
-          <HA :name="ani.title" :id="ani.title" lv="3">{{ ani.title }}</HA>
-          <img width="180" :src="ani.cover" v-if="show_all_pic && ani.cover" />
+          <HA :name="ani.title" :id="ani.title" lv="2">{{ ani.title }}</HA>
+          <img width="160" :src="ani.cover" v-if="show_all_pic && ani.cover" />
           <p v-if="show_all_tips && ani.tips"><b>提示</b>：{{ ani.tips }}</p>
           <details>
             <summary>
@@ -223,11 +225,6 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
                   </tr>
                 </tbody>
               </table>
-              <!-- <h4>第 {{ ep }} 集</h4>
-        <li v-for="clip in clips" :key="clip.ss">
-          {{ clip.ss }} {{ typeTrans(clip.type) }} {{ clip.t }}
-        </li> -->
-              <!-- <pre><code>{{ clips }}</code></pre> -->
             </div>
           </details>
           <details>
@@ -239,7 +236,10 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
               "
               type="danger"
               text="切换显示设置预设(文字版模式)"
-            />
+            /><br />
+            <Link href="https://text2image.fun/"
+              >复制后可至此处转为图片分享</Link
+            >
             <div v-for="(clips, ep) in ani.list_gen" :key="ep">
               <h5>{{ Number(ep) ? `第${ep}集` : ep }}</h5>
               <div class="language-text vp-adaptive-theme">
@@ -248,9 +248,9 @@ const ShowToggle = (on) => (on ? "warning" : "info"),
                 <pre
                   class="shiki shiki-themes github-light github-dark vp-code"
                   tabindex="0"
-                ><code><span class="line"></span><span v-if="show_source">来源</span> <span v-if="show_cut1">删减位置(删减视频)</span> <span v-if="show_cut2">删减位置(完整视频)</span> <span v-if="show_type">删减类型</span> <span v-if="show_len">删减长度(秒)</span> <span v-if="show_watch">AniClip片段截取</span>
+                ><code><span class="line"><span v-if="show_source">来源</span> <span v-if="show_cut1">删减位置(删减视频)</span> <span v-if="show_cut2">删减位置(完整视频)</span> <span v-if="show_type">删减类型</span> <span v-if="show_len">删减长度(秒)</span> <span v-if="show_watch">AniClip片段截取</span></span>
 <span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="show_source">{{ clip.来源 }}</span>  <span v-if="show_cut1">{{ clip["删减位置(删减视频)"] }}</span>            <span v-if="show_cut2">{{ clip["删减位置(完整视频)"] }}</span>          <span v-if="show_type">{{ clip.删减类型 }}</span>   <span v-if="show_len">{{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span>             <span v-if="show_watch">{{ clip.观看删减片段?"有":"无" }}</span>
-</span></code></pre>
+</span><span class="line"><span>共计{{ clips.length }}处删减/修改;由 aniclip.xrzyun.eu.org 生成;遵循 CC BY-NC-SA 4.0 协议共享</span></span></code></pre>
               </div>
             </div>
           </details>
