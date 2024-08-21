@@ -17,6 +17,7 @@ import {
   copyright,
   baseUrl,
 } from "../.vitepress/config.mjs";
+import { getGitTimestamp } from "../utils/get-git-timestamp";
 
 const times = await timeGetter();
 
@@ -73,30 +74,32 @@ export { data };
 
 export default defineLoader({
   watch: ["../../src/timeline/*.toml", "../../src/AutoSyncLatest/*.toml"],
-  load(watchedFiles) {
+  async load(watchedFiles) {
     // watchFiles 是一个所匹配文件的绝对路径的数组。
     // 生成一个博客文章元数据数组
     // 可用于在主题布局中呈现列表。
     const list: { [key: string]: Data[] } = {};
-    watchedFiles.reverse().forEach((file) => {
-      const mtime = fs.statSync(file).mtime;
-      const [time, title] = path.basename(file, ".toml").split("|");
-      const toml_raw = toml.parse(
-        fs.readFileSync(file, "utf-8")
-      ) as unknown as Ss;
-      !list[time] ? (list[time] = []) : "";
-      const tmp: { [key: string]: Ep[] | string | undefined } = {};
-      for (const [k, v] of Object.entries(toml_raw)) {
-        if (k !== "title" && k !== "tips" && k !== "cover") tmp[k] = v;
-      }
-      list[time].push({
-        title: toml_raw.title || title,
-        tips: toml_raw.tips,
-        cover: toml_raw.cover,
-        list: tmp,
-        mtime,
-      });
-    });
+    await Promise.all(
+      watchedFiles.reverse().map(async (file) => {
+        const mtime = new Date((await getGitTimestamp(file))[1]);
+        const [time, title] = path.basename(file, ".toml").split("|");
+        const toml_raw = toml.parse(
+          fs.readFileSync(file, "utf-8")
+        ) as unknown as Ss;
+        !list[time] ? (list[time] = []) : "";
+        const tmp: { [key: string]: Ep[] | string | undefined } = {};
+        for (const [k, v] of Object.entries(toml_raw)) {
+          if (k !== "title" && k !== "tips" && k !== "cover") tmp[k] = v;
+        }
+        list[time].push({
+          title: toml_raw.title || title,
+          tips: toml_raw.tips,
+          cover: toml_raw.cover,
+          list: tmp,
+          mtime,
+        });
+      })
+    );
     const gened_data = preGen(list);
     preGen2File(gened_data);
     return gened_data;
@@ -146,7 +149,7 @@ function genClip(
     );
 }
 
-const isASL = (set_time) =>
+const isASL = (set_time: string) =>
   set_time === "自动同步最新" ||
   set_time === "ASL" ||
   set_time === "AutoSyncLatest";
@@ -248,7 +251,6 @@ export function preGen(list: { [key: string]: Data[] }): NewData {
 
 function preGen2File(gened_data: NewData) {
   const gened_list = gened_data.data;
-  // fs.writeJsonSync(path.resolve(rootDir.path, "src/data.json"), preGen(gened_list));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public"));
   fs.writeJsonSync(path.resolve(rootDir.path, "docs/public/data.json"), {
     times: gened_data.times,
@@ -262,10 +264,15 @@ function preGen2File(gened_data: NewData) {
       { times, data: { [time]: ss } }
     );
   }
-  fs.copySync(
-    path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json"),
-    path.resolve(rootDir.path, "docs/public/timeline/ASL.json")
-  );
+  if (
+    fs.existsSync(
+      path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json")
+    )
+  )
+    fs.copyFileSync(
+      path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json"),
+      path.resolve(rootDir.path, "docs/public/timeline/ASL.json")
+    );
   fs.writeJsonSync(
     path.resolve(rootDir.path, "docs/public/feed.json"),
     gened_data.feed.json1()
