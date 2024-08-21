@@ -79,27 +79,25 @@ export default defineLoader({
     // 生成一个博客文章元数据数组
     // 可用于在主题布局中呈现列表。
     const list: { [key: string]: Data[] } = {};
-    await Promise.all(
-      watchedFiles.reverse().map(async (file) => {
-        const mtime = new Date((await getGitTimestamp(file))[1]);
-        const [time, title] = path.basename(file, ".toml").split("|");
-        const toml_raw = toml.parse(
-          fs.readFileSync(file, "utf-8")
-        ) as unknown as Ss;
-        !list[time] ? (list[time] = []) : "";
-        const tmp: { [key: string]: Ep[] | string | undefined } = {};
-        for (const [k, v] of Object.entries(toml_raw)) {
-          if (k !== "title" && k !== "tips" && k !== "cover") tmp[k] = v;
-        }
-        list[time].push({
-          title: toml_raw.title || title,
-          tips: toml_raw.tips,
-          cover: toml_raw.cover,
-          list: tmp,
-          mtime,
-        });
-      })
-    );
+    for (const file of watchedFiles.reverse()) {
+      const mtime = new Date((await getGitTimestamp(file))[1]);
+      const [time, title] = path.basename(file, ".toml").split("|");
+      const toml_raw = toml.parse(
+        fs.readFileSync(file, "utf-8")
+      ) as unknown as Ss;
+      !list[time] ? (list[time] = []) : "";
+      const tmp: { [key: string]: Ep[] | string | undefined } = {};
+      for (const [k, v] of Object.entries(toml_raw)) {
+        if (k !== "title" && k !== "tips" && k !== "cover") tmp[k] = v;
+      }
+      list[time].push({
+        title: toml_raw.title || title,
+        tips: toml_raw.tips,
+        cover: toml_raw.cover,
+        list: tmp,
+        mtime,
+      });
+    }
     const gened_data = preGen(list);
     preGen2File(gened_data);
     return gened_data;
