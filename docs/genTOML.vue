@@ -141,7 +141,7 @@
 
 <script lang="ts" setup>
 import TimeFormat from "hh-mm-ss";
-import { Ref, ref, watch } from "vue";
+import { type Ref, ref, watch } from "vue";
 import { useData } from "vitepress";
 
 const { isDark } = useData();
@@ -149,7 +149,7 @@ const { isDark } = useData();
 const ep = ref();
 const selected_types: Ref<string[]> = ref([]);
 const types = ref([
-  { text: "低精度模式", value: "nr" },
+  { text: "低精度模式 -> nr", value: "nr" },
   { text: "画面丢失 -> v_l", value: "v_l" },
   { text: "画面和谐 -> v_c", value: "v_c" },
   { text: "字幕丢失 -> s_l", value: "s_l" },
