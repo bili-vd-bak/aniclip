@@ -18,7 +18,7 @@ import "@nolebase/vitepress-plugin-enhanced-mark/client/style.css";
 import { NolebaseInlineLinkPreviewPlugin } from "@nolebase/vitepress-plugin-inline-link-preview/client";
 import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
 
-import { EnhanceAppContext, useData, useRoute } from "vitepress";
+import { useData, useRoute } from "vitepress";
 import { toRefs, h } from "vue";
 
 import "./main.css";

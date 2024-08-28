@@ -15,27 +15,32 @@
       />
     </label>
     <div class="ds-join ds-join-vertical">
-      <select
-        v-model="type"
-        class="ds-select ds-select-bordered ds-join-item flex"
-      >
-        <option disabled value="">
-          删减类型(选择)：请选择一个(多选请手动编辑)
-        </option>
+      <div class="ds-form-control">
+        <label class="ds-label cursor-pointer" v-for="type in types">
+          <span class="ds-label-text">{{ type.text }}</span>
+          <input
+            type="checkbox"
+            :id="type.value"
+            :value="type.value"
+            v-model="selected_types"
+            class="ds-checkbox"
+          />
+        </label>
+      </div>
+      <!-- <option value="nr">粗略模式 -> nr</option>
         <option value="v_l">画面丢失 -> v_l</option>
         <option value="v_c">画面和谐 -> v_c</option>
         <option value="s_l">字幕丢失 -> s_l</option>
         <option value="s_c">字幕和谐 -> s_c</option>
         <option value="s_e">字幕(翻译)错误 -> s_e</option>
-        <option value="a_l">音频丢失 -> a_l</option>
-      </select>
+        <option value="a_l">音频丢失 -> a_l</option> -->
       <label class="ds-form-control w-full max-w-xs">
         <div class="ds-label">
           <span class="ds-label-text">删减类型(手动填写):</span>
         </div>
         <input
           type="text"
-          v-model="type"
+          v-model.trim="type"
           placeholder="type 空格分割 可输中文"
           class="ds-input ds-input-bordered ds-join-item flex items-center"
         />
@@ -136,12 +141,22 @@
 
 <script lang="ts" setup>
 import TimeFormat from "hh-mm-ss";
-import { ref } from "vue";
+import { Ref, ref, watch } from "vue";
 import { useData } from "vitepress";
 
 const { isDark } = useData();
 
 const ep = ref();
+const selected_types: Ref<string[]> = ref([]);
+const types = ref([
+  { text: "低精度模式", value: "nr" },
+  { text: "画面丢失 -> v_l", value: "v_l" },
+  { text: "画面和谐 -> v_c", value: "v_c" },
+  { text: "字幕丢失 -> s_l", value: "s_l" },
+  { text: "字幕和谐 -> s_c", value: "s_c" },
+  { text: "字幕(翻译)错误 -> s_e", value: "s_e" },
+  { text: "音频丢失 -> a_l", value: "a_l" },
+]);
 const type = ref("");
 const ss = ref();
 const t = ref();
@@ -154,6 +169,10 @@ const m_url =
 
 const cType = (type: string) =>
   type
+    .replaceAll("粗略", "nr")
+    .replaceAll("粗略模式", "nr")
+    .replaceAll("低精度", "nr")
+    .replaceAll("低精度模式", "nr")
     .replaceAll("画面", "v_")
     .replaceAll("字幕", "s_")
     .replaceAll("音频", "a_")
@@ -186,6 +205,15 @@ function cT(t: any, c = false) {
   }
   return t;
 }
+
+watch(selected_types, (newSl) => {
+  type.value = newSl.join(" ").trim();
+});
+watch(type, (newType) => {
+  selected_types.value = newType.split(" ").map((v) => {
+    if (v) return cType(v);
+  });
+});
 
 // interface RestaurantItem {
 //   value: string;

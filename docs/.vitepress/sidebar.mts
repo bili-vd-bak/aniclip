@@ -7,7 +7,7 @@ fs.readdirSync(path.resolve(rootDir.path, "src/timeline")).forEach((fn) => {
   fn = path.basename(fn, ".toml").split("|")[0];
   tls.includes(fn) ? "" : tls.push(fn);
 });
-const timeline = tls
+export const timeline = tls
   .map((tl) => {
     return {
       text: tl,
@@ -15,7 +15,6 @@ const timeline = tls
     };
   })
   .reverse();
-// console.log(timeline);
 
 export default [
   {

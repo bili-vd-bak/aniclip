@@ -8,7 +8,7 @@ import validName from "../utils/get-valid-name";
 import ssRealGen from "../utils/ss-real-gen";
 import ffmpegCommandGen from "../utils/ffmpeg-command-gen";
 import rootDir from "app-root-path";
-import { timeGetter, Data as Time } from "../time.data";
+import { timeGetter, type Data as Time } from "../time.data";
 
 import { Feed } from "feed";
 import {
@@ -18,6 +18,9 @@ import {
   baseUrl,
 } from "../.vitepress/config.mjs";
 import { getGitTimestamp } from "../utils/get-git-timestamp";
+
+import { isASL, epGen, genSource, genClip } from "../utils/common";
+import { timeline } from "../.vitepress/sidebar.mts";
 
 const times = await timeGetter();
 
@@ -52,16 +55,19 @@ interface Ss {
   [key: string]: Ep[] | string | undefined;
 }
 
-export interface Data {
+interface Data {
   title?: string;
   tips?: string;
   cover?: string;
   list: { [key: string]: Ep[] | string | undefined };
   list_gen?: { [key: string]: List_gen[] };
-  mtime: Date;
+  list_gen_text?: { [key: string]: string };
+  mtime: Date | number;
+  btime: Date | number;
+  feed?: Feed;
 }
 
-export interface NewData {
+interface NewData {
   times: Time;
   data: {
     [key: string]: Data[];
@@ -70,7 +76,7 @@ export interface NewData {
 }
 
 declare const data: NewData;
-export { data };
+export { data, isASL, type Data, type NewData };
 
 export default defineLoader({
   watch: ["../../src/timeline/*.toml", "../../src/AutoSyncLatest/*.toml"],
@@ -80,7 +86,9 @@ export default defineLoader({
     // 可用于在主题布局中呈现列表。
     const list: { [key: string]: Data[] } = {};
     for (const file of watchedFiles.reverse()) {
-      const mtime = new Date((await getGitTimestamp(file))[1]);
+      const gt = await getGitTimestamp(file);
+      const mtime = new Date(gt[1]),
+        btime = new Date(gt[0]);
       const [time, title] = path.basename(file, ".toml").split("|");
       const toml_raw = toml.parse(
         fs.readFileSync(file, "utf-8")
@@ -96,6 +104,7 @@ export default defineLoader({
         cover: toml_raw.cover,
         list: tmp,
         mtime,
+        btime,
       });
     }
     const gened_data = preGen(list);
@@ -104,90 +113,61 @@ export default defineLoader({
   },
 });
 
-// const isASL = (set_time: string) =>
-//   set_time === "自动同步最新" ||
-//   set_time === "ASL" ||
-//   set_time === "AutoSyncLatest";
+const feed_template = {
+  title,
+  description,
+  id: baseUrl,
+  link: baseUrl,
+  language: "zh", // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
+  image: `${baseUrl}/logo.png`,
+  favicon: `${baseUrl}/logo.png`,
+  copyright,
+  updated: times.src_update, // optional, default = today
+  generator: "AniClip", // optional, default = 'Feed for Node.js'
+  feedLinks: {
+    // json: `${baseUrl}/feed.json`,
+    atom: `${baseUrl}/atom.xml`,
+  },
+  author: {
+    name: "bili-vd-bak Team",
+    email: "aniclip@xrzyun.eu.org",
+    link: "https://www.xrzyun.eu.org/",
+  },
+};
 
-/**
- * 获取视频源
- * @param {string} source
- */
-function genSource(source: string) {
-  if (!source) return "未知";
-  const host = new URL(source).hostname;
-  if (host.match("b23") || host.match("bili")) return "B站";
-  else if (host.match("iqy")) return "爱奇艺";
-  else if (host.match("qq.com")) return "腾讯";
-  else return source;
-}
-
-/**
- * Clip模板
- * @param {string} clip
- * @param {string} time
- * @param {string} title
- * @param {string} ep
- * @param {string} ss
- */
-function genClip(
-  clip: string,
-  time: string,
-  title: string,
-  ep: string,
-  ss: string
-) {
-  if (!clip) return "#";
-  else
-    return clip.replaceAll(
-      "TP-main::",
-      `https://alist.xrzyun.eu.org/aniclip-upload/${time}/${title}/${ep}/${validName(
-        `${ep}-${ss}`
-      )}.mp4`
-    );
-}
-
-const isASL = (set_time: string) =>
-  set_time === "自动同步最新" ||
-  set_time === "ASL" ||
-  set_time === "AutoSyncLatest";
-
-export function preGen(list: { [key: string]: Data[] }): NewData {
+function preGen(list: { [key: string]: Data[] }): NewData {
   const dts = {},
     derr = {},
     dts2 = {},
     derr2 = {};
   const feed = new Feed({
-    title,
-    description,
-    id: baseUrl,
-    link: baseUrl,
-    language: "zh", // optional, used only in RSS 2.0, possible values: http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes
-    image: `${baseUrl}/logo.png`,
-    favicon: `${baseUrl}/logo.png`,
-    copyright,
-    updated: times.src_update, // optional, default = today
-    generator: "AniClip", // optional, default = 'Feed for Node.js'
-    feedLinks: {
-      json: `${baseUrl}/feed.json`,
-      atom: `${baseUrl}/atom.xml`,
-    },
-    author: {
-      name: "bili-vd-bak Team",
-      email: "aniclip@xrzyun.eu.org",
-      link: "https://www.xrzyun.eu.org/",
-    },
+    ...feed_template,
+    title: feed_template.title + " - 季度订阅",
   });
   feed.addCategory("anime");
   for (const [time, ss] of Object.entries(list)) {
     ss.forEach((ani, index) => {
       list[time][index].list_gen = {};
+      list[time][index].list_gen_text = {};
+      const link = `${baseUrl}/${
+        (isASL(time) ? "ASL" : "timeline/" + time) +
+        "#" +
+        validName(ani.title).replaceAll(" ", "-")
+      }`;
+      const feed_bgm = new Feed({
+        ...feed_template,
+        title: feed_template.title + " - " + ani.title,
+      });
+      feed_bgm.addCategory("anime");
       for (const [ep, clips] of Object.entries(ani.list)) {
         (clips as Ep[]).forEach((clip) => {
           if (!list[time][index].list_gen[ep])
             list[time][index].list_gen[ep] = [];
-          list[time][index].list_gen[ep].push({
-            集数: ep as unknown as string,
+          if (!list[time][index].list_gen_text[ep])
+            list[time][index].list_gen_text[ep] = `<h5>${epGen(ep)}</h5><br/>
+          来源 删减位置(删减视频) 删减位置(完整视频) 删减类型 删减长度(秒) AniClip片段截取<br>\n`;
+          const to_push_data = {
+            集数: ep + "",
             source: clip.source,
             来源: genSource(clip.source),
             "删减位置(删减视频)": clip.ss,
@@ -225,23 +205,46 @@ export function preGen(list: { [key: string]: Data[] }): NewData {
               derr2
             ),
             提示: clip.tips,
-          });
+          };
+          list[time][index].list_gen[ep].push(to_push_data);
+          list[time][index].list_gen_text[ep] +=
+            to_push_data.来源 +
+            "  " +
+            to_push_data["删减位置(删减视频)"] +
+            "            " +
+            to_push_data["删减位置(完整视频)"] +
+            "          " +
+            to_push_data.删减类型 +
+            "   " +
+            (to_push_data["删减长度(秒)"]
+              ? to_push_data["删减长度(秒)"] + "s"
+              : "--") +
+            "             " +
+            (to_push_data.观看删减片段 ? "有" : "无") +
+            `<br>\n`;
         });
-        const link = `${baseUrl}/${
-          (isASL(time) ? "ASL" : "timeline/" + time) +
-          "#" +
-          validName(ani.title).replaceAll(" ", "-")
-        }`;
-        const cont = `共计${clips.length}处删减/修改;由 aniclip.xrzyun.eu.org 生成;遵循 CC BY-NC-SA 4.0 协议共享`;
-        feed.addItem({
-          title: `AniClip | ${ani.title} | ${Number(ep) ? `第${ep}集` : ep}`,
-          id: link,
+        list[time][index].list_gen_text[ep] + `共计${clips.length}处删减/修改`;
+        feed_bgm.addItem({
+          title: `AniClip | ${ani.title} | ${epGen(ep)}`,
           link,
-          description: cont,
-          content: cont,
           date: new Date(ani.mtime),
+          description: `共计${clips.length}处删减/修改`,
+          content: list[time][index].list_gen_text[ep],
         });
       }
+      if (
+        new Date(ani.mtime).getTime() >=
+        new Date().setMonth(new Date().getMonth() - 3)
+      )
+        feed.addItem({
+          title: `AniClip | ${ani.title}`,
+          // id: link,
+          link,
+          description: `发现新的删减/修改`,
+          content: feed_bgm.items.map((it) => it.content).join(`<br>\n`),
+          date: new Date(ani.mtime),
+        });
+      list[time][index].feed = { ...feed_bgm, items: feed_bgm.items.reverse() };
     });
   }
   return { times, data: list, feed };
@@ -249,18 +252,30 @@ export function preGen(list: { [key: string]: Data[] }): NewData {
 
 function preGen2File(gened_data: NewData) {
   const gened_list = gened_data.data;
+  const summary_data = {};
+  timeline.forEach(({ text }) => (summary_data[text] = null));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public"));
   fs.writeJsonSync(path.resolve(rootDir.path, "docs/public/data.json"), {
     times: gened_data.times,
-    data: gened_list,
+    data: summary_data,
   });
   fs.removeSync(path.resolve(rootDir.path, "docs/public/timeline"));
   fs.mkdirpSync(path.resolve(rootDir.path, "docs/public/timeline"));
   for (const [time, ss] of Object.entries(gened_list)) {
+    fs.mkdirpSync(path.resolve(rootDir.path, "docs/public/timeline", time));
     fs.writeJsonSync(
       path.resolve(rootDir.path, `docs/public/timeline/${time}.json`),
-      { times, data: { [time]: ss } }
+      { times, data: { [time]: { ...ss, feed: undefined } } }
     );
+    ss.forEach((ani) => {
+      fs.writeFileSync(
+        path.resolve(
+          rootDir.path,
+          `docs/public/timeline/${time}/${validName(ani.title)}.xml`
+        ),
+        ani.feed.atom1()
+      );
+    });
   }
   if (
     fs.existsSync(
@@ -271,16 +286,8 @@ function preGen2File(gened_data: NewData) {
       path.resolve(rootDir.path, "docs/public/timeline/AutoSyncLatest.json"),
       path.resolve(rootDir.path, "docs/public/timeline/ASL.json")
     );
-  fs.writeJsonSync(
-    path.resolve(rootDir.path, "docs/public/feed.json"),
-    gened_data.feed.json1()
-  );
   fs.writeFileSync(
     path.resolve(rootDir.path, "docs/public/atom.xml"),
     gened_data.feed.atom1()
-  );
-  fs.writeFileSync(
-    path.resolve(rootDir.path, "docs/public/feed.xml"),
-    gened_data.feed.rss2()
   );
 }

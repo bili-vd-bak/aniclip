@@ -32,23 +32,13 @@ import { data as time } from "./time.data.ts"
 
 ## RSS订阅
 
-### RSS 2.0
-
-```url
-https://aniclip.xrzyun.eu.org/feed.xml
-```
-
-### Atom 1.0
+近三个月的番剧删减信息订阅：  
 
 ```url
 https://aniclip.xrzyun.eu.org/atom.xml
 ```
 
-### JSON Feed 1.0
-
-```url
-https://aniclip.xrzyun.eu.org/feed.json
-```
+若需订阅特定番剧，请前往各季度页面，在番剧下方获取对应RSS链接。  
 
 ## 基于API的查询方式
 
@@ -59,8 +49,12 @@ https://aniclip.xrzyun.eu.org/feed.json
 以下链接任选:  
 
 ```url
+(查询更新时间及有记录的季度)
 https://aniclip.xrzyun.eu.org/data.json
-(选择季度)
+```
+
+```url
+(选择单季度)
 (仅需在timeline任意页面后加上 .json 即可)
 https://aniclip.xrzyun.eu.org/timeline/{季度}.json
 ```
@@ -76,6 +70,14 @@ https://aniclip.xrzyun.eu.org/timeline/{季度}.json
 #### UI/ICON
 
 - 首页图标: [Re-Wearbili](https://github.com/SpaceXC/Re-Wearbili) -- UI(`Creative Common 4.0`)
+
+#### 网络上相关代码使用及灵感
+
+- 图片分享功能:[【基于html2canvas实现网页保存为图片及图片清晰度优化】分享自 @SegmentFault](https://segmentfault.com/a/1190000011478657?utm_medium=shareLink&utm_campaign=socialShare)
+
+- Git时间戳获取: [Xavi](https://xaviw.github.io/XaviDocs/%E5%B7%A5%E5%85%B7%E7%B3%BB%E5%88%97/VitePress%E6%90%AD%E5%BB%BA/%E6%89%A9%E5%B1%95%E9%A6%96%E9%A1%B5%E5%86%85%E5%AE%B9(%E6%96%B0).html)及[Vitepress官方](https://github.com/vuejs/vitepress/blob/main/src/node/utils/getGitTimestamp.ts)
+
+- Modal弹窗: [Vitepress文档](https://vitepress.dev/zh/guide/using-vue#using-teleports)
 
 #### NPM包
 

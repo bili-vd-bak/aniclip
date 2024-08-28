@@ -31,13 +31,14 @@ export default function cGen(
     else if (!Number(t) && Number(t) !== 0) t = TimeFormat.toS(t as string);
     // console.log(typeof t, t);
     // console.log(TimeFormat.toS(t));
+    const offset = type.includes("nr") ? 12 : 7;
     const id = `${time}|${title}|${ep}|${source}`;
     if (!dts[id]) dts[id] = 0;
     if (!derr[id]) derr[id] = false;
     const c = `ffmpeg -ss ${TimeFormat.fromS(
-      TimeFormat.toS(ss) + dts[id] - 7
+      TimeFormat.toS(ss) + dts[id] - offset
     )} -i ${"$"}{视频路径或链接} -t ${TimeFormat.fromS(
-      Number(t) + 14
+      Number(t) + offset * 2
     )} -c copy "./${validName(`${ep}-${ss}`)}.mp4"`;
     if (type.match("_l") || type.match("丢失")) dts[id] += Number(t);
     return c;
