@@ -9,21 +9,13 @@ import HA from "../utils/head-anchor.vue";
 import { ref } from "vue";
 import { VPBadge, VPButton } from "vitepress/theme";
 import Html2Pic from "../utils/html2pic.ts";
+import { useGlobalConfigStore, useLocalConfigStore } from "../stores/config";
 
 defineProps<{ set_time?: string; min?: "on" | string }>();
 
-const show_all_pic = ref(true),
-  show_all_tips = ref(true),
-  show_all_share_pic = ref(true),
-  show_source = ref(true),
-  show_cut1 = ref(true),
-  show_cut2 = ref(true),
-  show_type = ref(true),
-  show_len = ref(true),
-  show_watch = ref(true),
-  show_contribute = ref(false),
-  show_tips = ref(true),
-  tmp_show_capture = ref(false),
+const config = { global: useGlobalConfigStore(), local: useLocalConfigStore() };
+
+const tmp_show_capture = ref(false),
   tmp_to_share_data = ref<{
     AT: string;
     ep: string | number;
@@ -46,22 +38,22 @@ const show_all_pic = ref(true),
   });
 tmp_to_share_data.value.rcScale = 1 / tmp_to_share_data.value.scale;
 
-const ShowToggle = (on: boolean) => (on ? "warning" : "info"),
-  ShowText = (on: boolean) => (on ? "开" : "关");
+// const ShowToggle = (on: boolean) => (on ? "warning" : "info"),
+//   ShowText = (on: boolean) => (on ? "开" : "关");
 
 const isEmptyTips = (clips: { 提示?: string }[]) =>
   !clips.find((clip) => clip.提示);
 
 const colspanCal = (isEmptyTips?: boolean) => {
   let c = 0;
-  if (show_source.value) c++;
-  if (show_cut1.value) c++;
-  if (show_cut2.value) c++;
-  if (show_type.value) c++;
-  if (show_len.value) c++;
-  if (show_watch.value) c++;
-  if (show_contribute.value) c++;
-  if (show_tips.value && !isEmptyTips) c++;
+  if (config.local.source) c++;
+  if (config.local.cut1) c++;
+  if (config.local.cut2) c++;
+  if (config.local.type) c++;
+  if (config.local.len) c++;
+  if (config.local.watch) c++;
+  if (config.local.contribute) c++;
+  if (config.local.tips && !isEmptyTips) c++;
   return c;
 };
 
@@ -150,39 +142,50 @@ async function HtmlDlPic(
             <th>季度提示</th>
             <th>保存为图片按钮</th>
             <th>预设(适用于分享)</th>
+            <th>重置全部设置</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
               <VPBadge
-                @click="show_all_pic = !show_all_pic"
-                :type="ShowToggle(show_all_pic)"
-                :text="ShowText(show_all_pic)"
+                @click="config.global.toggle('pic')"
+                :type="config.global.getBadgeType('pic')"
+                :text="config.global.getBadgeText('pic')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_all_tips = !show_all_tips"
-                :type="ShowToggle(show_all_tips)"
-                :text="ShowText(show_all_tips)"
+                @click="config.global.toggle('tips')"
+                :type="config.global.getBadgeType('tips')"
+                :text="config.global.getBadgeText('tips')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_all_share_pic = !show_all_share_pic"
-                :type="ShowToggle(show_all_share_pic)"
-                :text="ShowText(show_all_share_pic)"
+                @click="config.global.toggle('share_pic')"
+                :type="config.global.getBadgeType('share_pic')"
+                :text="config.global.getBadgeText('share_pic')"
               />
             </td>
             <td>
               <VPBadge
                 @click="
-                  show_source = !show_source;
-                  show_watch = !show_watch;
+                  config.local.toggle('source');
+                  config.local.toggle('watch');
                 "
                 type="danger"
                 text="切换"
+              />
+            </td>
+            <td>
+              <VPBadge
+                @click="
+                  config.global.$reset();
+                  config.local.$reset();
+                "
+                type="danger"
+                text="重置"
               />
             </td>
           </tr>
@@ -210,58 +213,58 @@ async function HtmlDlPic(
           <tr>
             <td>
               <VPBadge
-                @click="show_source = !show_source"
-                :type="ShowToggle(show_source)"
-                :text="ShowText(show_source)"
+                @click="config.local.toggle('source')"
+                :type="config.local.getBadgeType('source')"
+                :text="config.local.getBadgeText('source')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_cut1 = !show_cut1"
-                :type="ShowToggle(show_cut1)"
-                :text="ShowText(show_cut1)"
+                @click="config.local.toggle('cut1')"
+                :type="config.local.getBadgeType('cut1')"
+                :text="config.local.getBadgeText('cut1')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_cut2 = !show_cut2"
-                :type="ShowToggle(show_cut2)"
-                :text="ShowText(show_cut2)"
+                @click="config.local.toggle('cut2')"
+                :type="config.local.getBadgeType('cut2')"
+                :text="config.local.getBadgeText('cut2')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_type = !show_type"
-                :type="ShowToggle(show_type)"
-                :text="ShowText(show_type)"
+                @click="config.local.toggle('type')"
+                :type="config.local.getBadgeType('type')"
+                :text="config.local.getBadgeText('type')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_len = !show_len"
-                :type="ShowToggle(show_len)"
-                :text="ShowText(show_len)"
+                @click="config.local.toggle('len')"
+                :type="config.local.getBadgeType('len')"
+                :text="config.local.getBadgeText('len')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_watch = !show_watch"
-                :type="ShowToggle(show_watch)"
-                :text="ShowText(show_watch)"
+                @click="config.local.toggle('watch')"
+                :type="config.local.getBadgeType('watch')"
+                :text="config.local.getBadgeText('watch')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_contribute = !show_contribute"
-                :type="ShowToggle(show_contribute)"
-                :text="ShowText(show_contribute)"
+                @click="config.local.toggle('contribute')"
+                :type="config.local.getBadgeType('contribute')"
+                :text="config.local.getBadgeText('contribute')"
               />
             </td>
             <td>
               <VPBadge
-                @click="show_tips = !show_tips"
-                :type="ShowToggle(show_tips)"
-                :text="ShowText(show_tips)"
+                @click="config.local.toggle('tips')"
+                :type="config.local.getBadgeType('tips')"
+                :text="config.local.getBadgeText('tips')"
               />
             </td>
           </tr>
@@ -300,9 +303,11 @@ async function HtmlDlPic(
           <img
             width="160"
             :src="ani2.cover"
-            v-if="show_all_pic && ani2.cover"
+            v-if="config.global.pic && ani2.cover"
           />
-          <p v-if="show_all_tips && ani2.tips"><b>提示</b>：{{ ani2.tips }}</p>
+          <p v-if="config.global.tips && ani2.tips">
+            <b>提示</b>：{{ ani2.tips }}
+          </p>
           <details class="details custom-block">
             <summary>
               <b>点击展开表格</b>(含 片段观看、FFMpeg命令生成、详情等)
@@ -311,7 +316,7 @@ async function HtmlDlPic(
               <h5>{{ epGen(clips?.[0].集数 || ep) }}</h5>
               <VPButton
                 text="保存为图片"
-                v-if="show_all_share_pic && !tmp_show_capture"
+                v-if="config.global.share_pic && !tmp_show_capture"
                 @click="
                   () => {
                     tmp_to_share_data = {
@@ -325,10 +330,10 @@ async function HtmlDlPic(
                 "
               />
               <VPButton
-                v-if="show_all_share_pic"
+                v-if="config.global.share_pic"
                 @click="
-                  show_source = !show_source;
-                  show_watch = !show_watch;
+                  config.local.toggle('source');
+                  config.local.toggle('watch');
                 "
                 theme="alt"
                 text="切换显示预设(分享模式)"
@@ -353,41 +358,49 @@ async function HtmlDlPic(
                   </tr>
                   <tr>
                     <!-- <th>集数</th> -->
-                    <th v-if="show_source">来源</th>
-                    <th v-if="show_cut1">删减位置(删减视频)</th>
-                    <th v-if="show_cut2">删减位置(完整视频)</th>
-                    <th v-if="show_type">删减类型</th>
-                    <th v-if="show_len">删减长度(秒)</th>
-                    <th v-if="show_watch">观看删减片段</th>
-                    <th v-if="show_contribute">贡献片段截取(FFMpeg)</th>
-                    <th v-if="show_tips && !isEmptyTips(clips)">提示</th>
+                    <th v-if="config.local.source">来源</th>
+                    <th v-if="config.local.cut1">删减位置(删减视频)</th>
+                    <th v-if="config.local.cut2">删减位置(完整视频)</th>
+                    <th v-if="config.local.type">删减类型</th>
+                    <th v-if="config.local.len">删减长度(秒)</th>
+                    <th v-if="config.local.watch">观看删减片段</th>
+                    <th v-if="config.local.contribute">贡献片段截取(FFMpeg)</th>
+                    <th v-if="config.local.tips && !isEmptyTips(clips)">
+                      提示
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="clip in clips" :key="clip['删减位置(删减视频)']">
                     <!-- <td>{{ clip.集数 }}</td> -->
-                    <td v-if="show_source">
+                    <td v-if="config.local.source">
                       <Link v-if="clip.source" :href="clip.source">{{
                         clip.来源
                       }}</Link>
                       <p v-else>{{ clip.来源 }}</p>
                     </td>
-                    <td v-if="show_cut1">{{ clip["删减位置(删减视频)"] }}</td>
-                    <td v-if="show_cut2">{{ clip["删减位置(完整视频)"] }}</td>
-                    <td v-if="show_type">
+                    <td v-if="config.local.cut1">
+                      {{ clip["删减位置(删减视频)"] }}
+                    </td>
+                    <td v-if="config.local.cut2">
+                      {{ clip["删减位置(完整视频)"] }}
+                    </td>
+                    <td v-if="config.local.type">
                       <typeCodeGen :types="clip.删减类型" />
                     </td>
-                    <td v-if="show_len">{{ clip["删减长度(秒)"] }}</td>
-                    <td v-if="show_watch">
+                    <td v-if="config.local.len">
+                      {{ clip["删减长度(秒)"] }}
+                    </td>
+                    <td v-if="config.local.watch">
                       <Link :href="clip.观看删减片段" v-if="clip.观看删减片段">
                         跳转
                       </Link>
                       <p v-else>-</p>
                     </td>
-                    <td v-if="show_contribute">
+                    <td v-if="config.local.contribute">
                       <code>{{ clip["贡献片段截取(FFMpeg)"] }}</code>
                     </td>
-                    <td v-if="show_tips && !isEmptyTips(clips)">
+                    <td v-if="config.local.tips && !isEmptyTips(clips)">
                       {{ clip.提示 }}
                     </td>
                   </tr>
@@ -412,8 +425,8 @@ async function HtmlDlPic(
             <summary><b>点击展开文字版</b></summary>
             <VPBadge
               @click="
-                show_source = !show_source;
-                show_watch = !show_watch;
+                config.local.toggle('source');
+                config.local.toggle('watch');
               "
               type="danger"
               text="切换显示预设(分享模式)"
@@ -429,8 +442,8 @@ async function HtmlDlPic(
                 <pre
                   class="shiki shiki-themes github-light github-dark vp-code"
                   tabindex="0"
-                ><code><span class="line"><span v-if="show_source">来源</span><span v-if="show_cut1"> 删减位置(删减视频)</span><span v-if="show_cut2"> 删减位置(完整视频)</span><span v-if="show_type"> 删减类型</span><span v-if="show_len"> 删减长度(秒)</span><span v-if="show_watch"> AniClip片段截取</span></span>
-<span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="show_source">{{ clip.来源 }}</span><span v-if="show_cut1">  {{ clip["删减位置(删减视频)"] }}</span><span v-if="show_cut2">            {{ clip["删减位置(完整视频)"] }}</span><span v-if="show_type">          {{ clip.删减类型 }}</span><span v-if="show_len">   {{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span><span v-if="show_watch">             {{ clip.观看删减片段?"有":"无" }}</span>
+                ><code><span class="line"><span v-if="config.local.source">来源</span><span v-if="config.local.cut1"> 删减位置(删减视频)</span><span v-if="config.local.cut2"> 删减位置(完整视频)</span><span v-if="config.local.type"> 删减类型</span><span v-if="config.local.len"> 删减长度(秒)</span><span v-if="config.local.watch"> AniClip片段截取</span></span>
+<span class="line" v-for="clip in clips" :key="clip['删减位置(删减视频)']"><span v-if="config.local.source">{{ clip.来源 }}</span><span v-if="config.local.cut1">  {{ clip["删减位置(删减视频)"] }}</span><span v-if="config.local.cut2">            {{ clip["删减位置(完整视频)"] }}</span><span v-if="config.local.type">          {{ clip.删减类型 }}</span><span v-if="config.local.len">   {{ clip["删减长度(秒)"]?clip["删减长度(秒)"]+"s":"--" }}</span><span v-if="config.local.watch">             {{ clip.观看删减片段?"有":"无" }}</span>
 </span><span class="line"><span>共计{{ clips.length }}处删减/修改;由 aniclip.xrzyun.eu.org 生成;遵循 CC BY-NC-SA 4.0 协议共享</span></span></code></pre>
               </div>
             </div>

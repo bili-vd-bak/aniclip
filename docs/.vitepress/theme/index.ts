@@ -20,6 +20,8 @@ import "@nolebase/vitepress-plugin-inline-link-preview/client/style.css";
 
 import { useData, useRoute } from "vitepress";
 import { toRefs, h } from "vue";
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 import "./main.css";
 
@@ -38,6 +40,9 @@ export default {
   },
   enhanceApp({ app }) {
     app.use(NolebaseInlineLinkPreviewPlugin);
+    const pinia = createPinia();
+    pinia.use(piniaPluginPersistedstate);
+    app.use(pinia);
   },
   setup() {
     // 获取前言和路由

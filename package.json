@@ -42,6 +42,8 @@
   "dependencies": {
     "@std/toml": "npm:@jsr/std__toml@1.0.0-rc.4",
     "hh-mm-ss": "^1.2.0",
-    "html2canvas": "^1.4.1"
+    "html2canvas": "^1.4.1",
+    "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.0.1"
   }
 }
