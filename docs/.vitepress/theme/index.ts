@@ -1,3 +1,4 @@
+import type { Theme } from "vitepress";
 import DefaultTheme from "vitepress/theme";
 
 import giscusTalk from "vitepress-plugin-comment-with-giscus";
@@ -81,4 +82,4 @@ export default {
       true
     );
   },
-};
+} satisfies Theme;
